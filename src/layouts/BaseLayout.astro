@@ -1,0 +1,96 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogUrl?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl = 'https://melvynraymond.com/',
+  ogTitle,
+  ogDescription,
+  ogUrl,
+} = Astro.props;
+
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="fr" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- Google Search Console -->
+    <meta name="google-site-verification" content="-WSLTFc2DfGk8-XsNfdDuKsls87sXJhT_8FpMXA7yNA" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content={description} />
+    <meta name="author" content="Melvyn Raymond" />
+    <meta name="theme-color" content="#0F172A" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Melvyn Raymond" />
+    <meta property="og:title" content={ogTitle || title} />
+    <meta property="og:description" content={ogDescription || description} />
+    <meta property="og:url" content={ogUrl || canonicalUrl} />
+    <meta property="og:image" content="https://melvynraymond.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogTitle || title} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle || title} />
+    <meta name="twitter:description" content={ogDescription || description} />
+    <meta name="twitter:image" content="https://melvynraymond.com/og-image.jpg" />
+
+    <slot name="head" />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts (non-render-blocking) -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+      is:inline
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Iconify (lazy-loaded after idle) -->
+    <script is:inline>
+      (window.requestIdleCallback||function(cb){setTimeout(cb,1000)})(function(){
+        var s=document.createElement("script");
+        s.src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js";
+        document.head.appendChild(s);
+      });
+    </script>
+  </head>
+  <body class="overflow-x-hidden w-full">
+    <slot />
+  </body>
+</html>
