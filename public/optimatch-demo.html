@@ -2890,6 +2890,18 @@
                 window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
             }
 
+            // ---- click without scrolling parent page ----
+            function safeClick(el) {
+                var parent = window.parent;
+                if (parent && parent !== window) {
+                    var sy = parent.scrollY;
+                    el.click();
+                    parent.scrollTo({ top: sy });
+                } else {
+                    el.click();
+                }
+            }
+
             // ---- tooltip helpers ----
             function positionTooltip() {
                 if (!tooltipEl) return;
@@ -2973,7 +2985,7 @@
                 await sleep(300);
                 await moveTo(el);
                 await clickEffect();
-                el.click();
+                safeClick(el);
             }
 
             function waitForResume() {
@@ -3086,7 +3098,7 @@
                             showTooltip('Le commercial ajoute GEG \u00e0 sa s\u00e9lection.');
                             await sleep(600);
                             await clickEffect();
-                            if (!geg.classList.contains('selected')) geg.click();
+                            if (!geg.classList.contains('selected')) safeClick(geg);
                             await sleep(600);
                         }
                         if (paused) await waitForResume();
@@ -3101,7 +3113,7 @@
                             showTooltip('Il ajoute aussi EKWATEUR.');
                             await sleep(600);
                             await clickEffect();
-                            if (!ekw.classList.contains('selected')) ekw.click();
+                            if (!ekw.classList.contains('selected')) safeClick(ekw);
                             await sleep(600);
                         }
                         if (paused) await waitForResume();
@@ -3116,7 +3128,7 @@
                             showTooltip('Il transmet les 6 fournisseurs au P\u00f4le Pricing.');
                             await sleep(600);
                             await clickEffect();
-                            submitBtn.click();
+                            safeClick(submitBtn);
                             await sleep(600);
                         }
                         if (paused) await waitForResume();
