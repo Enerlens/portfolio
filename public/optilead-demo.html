@@ -1345,8 +1345,31 @@
                 justify-content: center;
             }
             .search-options {
-                flex-direction: column;
-                gap: 0.75rem;
+                flex-direction: row;
+                gap: 0.625rem;
+                padding: 0.625rem 0.75rem;
+            }
+            .search-option {
+                flex: 1;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            .option-toggle {
+                width: 36px;
+                height: 20px;
+            }
+            .option-toggle::after {
+                width: 16px;
+                height: 16px;
+            }
+            .option-toggle.active::after {
+                transform: translateX(16px);
+            }
+            .option-text strong {
+                font-size: 0.75rem;
+            }
+            .option-text span {
+                display: none;
             }
             .company-header {
                 padding: 1.5rem;
@@ -2369,15 +2392,25 @@
                 cursorEl.style.display = 'none';
                 showTooltip("La fiche complète s'affiche : infos légales, contacts, signaux d'achat.");
                 var maxScroll = document.body.scrollHeight - window.innerHeight;
-                var stopRatios = [0.1, 0.25, 0.4, 0.55, 0.7];
-                var scrollDur = mobile ? 2000 : 3500;
-                var pauseDur = mobile ? 600 : 1000;
 
-                for (var j = 0; j < stopRatios.length; j++) {
-                    await smoothScroll(Math.round(maxScroll * stopRatios[j]), scrollDur);
-                    if (!active) return;
-                    await wait(pauseDur);
-                    if (!active) return;
+                if (mobile) {
+                    // Mobile: 3 distinct stops with clear pauses — feels deliberate, not laggy
+                    var mobileStops = [0.2, 0.45, 0.7];
+                    for (var j = 0; j < mobileStops.length; j++) {
+                        await smoothScroll(Math.round(maxScroll * mobileStops[j]), 1400);
+                        if (!active) return;
+                        await wait(1200);
+                        if (!active) return;
+                    }
+                } else {
+                    // Desktop: 5 smooth stops (unchanged)
+                    var stopRatios = [0.1, 0.25, 0.4, 0.55, 0.7];
+                    for (var j = 0; j < stopRatios.length; j++) {
+                        await smoothScroll(Math.round(maxScroll * stopRatios[j]), 3500);
+                        if (!active) return;
+                        await wait(1000);
+                        if (!active) return;
+                    }
                 }
                 hideTooltip();
                 await wait(300);
