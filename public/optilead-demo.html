@@ -1959,20 +1959,63 @@
         (function() {
             if (window.self === window.top) return;
 
-            let active = true;
-            let timers = [];
+            var RESUME_DELAY = 25000; // 25s of inactivity before resuming
+            var active = false;
+            var timers = [];
+            var resumeTimer = null;
+            var companyIndex = 0;
 
-            function stop() {
-                active = false;
-                _autopilot = false;
+            function clearTimers() {
                 timers.forEach(clearTimeout);
                 timers = [];
+            }
+
+            function resetView() {
+                // Dismiss loading overlay
+                document.getElementById('loadingOverlay').classList.remove('active');
+                // Clear results
+                var result = document.getElementById('companyResult');
+                result.classList.add('d-none');
+                result.innerHTML = '';
+                // Clear input
                 var inp = document.getElementById('siretInput');
-                if (inp) inp.classList.remove('autopilot-focus');
+                inp.value = '';
+                inp.classList.remove('autopilot-focus');
+                // Scroll iframe to top
+                window.scrollTo(0, 0);
+            }
+
+            function stopAutopilot() {
+                active = false;
+                _autopilot = false;
+                clearTimers();
+            }
+
+            function startAutopilot() {
+                active = true;
+                _autopilot = true;
+                run(companyIndex);
+            }
+
+            function scheduleResume() {
+                clearTimeout(resumeTimer);
+                resumeTimer = setTimeout(function() {
+                    resetView();
+                    startAutopilot();
+                }, RESUME_DELAY);
+            }
+
+            function onUserInteraction() {
+                if (active) {
+                    stopAutopilot();
+                    resetView();
+                }
+                // (Re)schedule resume on every interaction
+                scheduleResume();
             }
 
             ['mousedown', 'keydown', 'touchstart', 'pointerdown'].forEach(function(e) {
-                document.addEventListener(e, stop, { once: true, capture: true });
+                document.addEventListener(e, onUserInteraction, { capture: true });
             });
 
             function wait(ms) {
@@ -2064,11 +2107,12 @@
                 if (!active) return;
 
                 // Loop to next company
-                run(i + 1);
+                companyIndex = i + 1;
+                run(companyIndex);
             }
 
-            // Start after a short delay
-            setTimeout(function() { if (active) { _autopilot = true; run(0); } }, 3000);
+            // Start after initial delay
+            setTimeout(function() { startAutopilot(); }, 3000);
         })();
     </script>
 </body>
