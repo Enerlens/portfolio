@@ -2039,7 +2039,9 @@
                     function step(now) {
                         if (!active) return resolve();
                         var p = Math.min((now - t0) / ms, 1);
-                        window.scrollTo(0, s + d * (1 - Math.pow(1 - p, 3)));
+                        // ease-in-out sine — gentle start and end
+                        var eased = -(Math.cos(Math.PI * p) - 1) / 2;
+                        window.scrollTo(0, s + d * eased);
                         p < 1 ? requestAnimationFrame(step) : resolve();
                     }
                     requestAnimationFrame(step);
@@ -2080,9 +2082,9 @@
                 // Scroll through results progressively
                 var scrollStops = [500, 1100, 1800, 2500];
                 for (var j = 0; j < scrollStops.length; j++) {
-                    await smoothScroll(scrollStops[j], 1800);
+                    await smoothScroll(scrollStops[j], 2800);
                     if (!active) return;
-                    await wait(1200);
+                    await wait(1800);
                     if (!active) return;
                 }
 
@@ -2094,7 +2096,7 @@
                 if (!active) return;
 
                 // Scroll to bottom to reveal AI response
-                await smoothScroll(document.body.scrollHeight, 2000);
+                await smoothScroll(document.body.scrollHeight, 3000);
                 if (!active) return;
 
                 // Pause on AI response
