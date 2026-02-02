@@ -57,6 +57,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html, body { overflow-x: hidden; }
+
         body {
             font-family: var(--font);
             background: #FFFFFF;
@@ -1301,6 +1303,55 @@
             .suppliers-tab.active { grid-template-columns: repeat(2, 1fr); }
             .client-strip-stats { display: none; }
             .client-strip-meta { display: none; }
+            .client-strip-badge { display: none; }
+            .client-strip-opp { display: none; }
+
+            /* SF Header */
+            .sf-search { width: 140px; }
+            .sf-header-actions { gap: 2px; margin-left: 8px; }
+
+            /* SF Nav — horizontal scroll */
+            .sf-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .sf-nav::-webkit-scrollbar { display: none; }
+            .sf-nav-item { white-space: nowrap; font-size: 12px; padding: 0 8px; }
+            .sf-org-name { font-size: 13px; }
+
+            /* SF Record header — stack buttons */
+            .sf-record-top { flex-wrap: wrap; }
+            .sf-record-actions { width: 100%; }
+            .sf-record-title { font-size: 16px; }
+            .sf-record-header { padding: 12px 16px; }
+
+            /* SF Content — single column */
+            .sf-content { grid-template-columns: 1fr; padding: 12px 16px; }
+
+            /* SF Detail fields */
+            .sf-detail-row { flex-direction: column; gap: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .suppliers-tab.active { grid-template-columns: 1fr; }
+
+            /* SF Header compact */
+            .sf-search { display: none; }
+            .sf-header { padding: 0 8px; height: 44px; }
+            .sf-header-btn { width: 28px; height: 28px; font-size: 13px; }
+            .sf-avatar { width: 26px; height: 26px; font-size: 10px; }
+
+            /* SF Record — tighter */
+            .sf-record-icon { width: 36px; height: 36px; font-size: 16px; }
+            .sf-btn { padding: 6px 10px; font-size: 12px; }
+            .sf-record-fields { gap: 6px; }
+            .sf-record-field { font-size: 12px; }
+
+            /* OptiMatch app header */
+            .client-strip { padding: 10px 12px; }
+            .client-strip-identity { gap: 8px; }
+            .client-strip-avatar { width: 32px; height: 32px; font-size: 11px; }
+            .client-strip-name { font-size: 13px; }
+
+            /* Bottom bar */
+            .footer-bar { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
         }
 
         /* ========== SALESFORCE SCREEN - LIGHTNING EXPERIENCE ========== */
