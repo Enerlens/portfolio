@@ -15,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="aura-background-component top-0 w-full -z-10 absolute h-full">
       <div data-us-project="UtvhDctN8AjL6tvf1yKd" class="absolute w-full h-full left-0 top-0 -z-10"></div>
       <script is:inline>
-        (window.requestIdleCallback||function(cb){setTimeout(cb,1500)})(function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}});
+        if(window.innerWidth>768){(window.requestIdleCallback||function(cb){setTimeout(cb,1500)})(function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}});}
       </script>
     </div>
   </div>
@@ -169,7 +169,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <footer class="border-t border-line">
     <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <a href="/" class="text-xs font-medium text-secondary hover:text-accent transition-colors">&larr; Retour au portfolio</a>
-      <p class="text-[10px] text-secondary/60 font-mono uppercase tracking-widest">
+      <p class="text-[10px] text-secondary font-mono uppercase tracking-widest">
         &copy; 2026 Melvyn Raymond
       </p>
     </div>

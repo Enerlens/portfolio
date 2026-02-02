@@ -439,6 +439,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             src="/hero-800w.webp"
             alt="Melvyn Raymond, Product Manager Énergie B2B"
             loading="lazy"
+            decoding="async"
             width="800"
             height="1000"
             class="absolute inset-0 block w-full h-full object-cover z-[2] transition-transform duration-700 ease-spring hover:scale-105"
@@ -796,18 +797,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               alt="Plateforme — Bilan énergétique"
               class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-1000 ease-in-out opacity-100 scale-100"
               data-carousel-slide
+              loading="lazy"
+              decoding="async"
             />
             <img
               src="/screen1.webp"
               alt="Plateforme — Optimisation électrique"
               class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-1000 ease-in-out opacity-0 scale-105"
               data-carousel-slide
+              loading="lazy"
+              decoding="async"
             />
             <img
               src="/screen2.webp"
               alt="Plateforme — Suivi Facturation"
               class="absolute inset-0 w-full h-full object-contain transition-all duration-1000 ease-in-out opacity-0 scale-105"
               data-carousel-slide
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <!-- Progress bar + dots -->
@@ -1616,24 +1623,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     // GSAP Animations - Loader Sequence
     const loaderTimeline = gsap.timeline();
     loaderTimeline.to("#loader-progress", {
-        width: "100%", duration: 0.5, ease: "power2.inOut",
+        width: "100%", duration: 0.35, ease: "power2.inOut",
         onUpdate: function() {
           const el = document.getElementById("loader-text");
           if (el) el.innerText = Math.round(this.progress() * 100) + "%";
         }
     })
-    .to("#loader", { yPercent: -100, duration: 0.4, ease: "power4.inOut" })
+    .to("#loader", { yPercent: -100, duration: 0.3, ease: "power4.inOut" })
 
     // Hero Reveal
-    .to(".hero-glow", { opacity: 1, duration: 1.0, ease: "power2.out" }, "-=0.3")
+    .to(".hero-glow", { opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.2")
     .to(".hero-char", {
         opacity: 1, y: 0, filter: "blur(0px)",
-        duration: 0.6, stagger: 0.04, ease: "power3.out"
-    }, "-=0.7")
+        duration: 0.45, stagger: 0.03, ease: "power3.out"
+    }, "-=0.4")
     .to(".hero-fade-in", {
         opacity: 1, y: 0,
-        duration: 0.6, stagger: 0.08, ease: "power2.out"
-    }, "-=0.4");
+        duration: 0.4, stagger: 0.06, ease: "power2.out"
+    }, "-=0.3");
 
     // ============================================================
     // DEFERRED — Dynamically import ScrollTrigger + Lenis after idle
