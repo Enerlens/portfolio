@@ -75,21 +75,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <path d="M220,75 C255,75 255,150 275,150" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
             <path d="M220,225 C255,225 255,150 275,150" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
             <path d="M345,150 L390,150" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
-            <path d="M55,150 C100,150 100,75 130,75 L220,75 C255,75 255,150 275,150 L345,150 L410,150" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round"></path>
-            <path d="M55,150 C100,150 100,225 130,225 L220,225 C255,225 255,150 275,150 L345,150 L410,150" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round"></path>
-            <circle cx="40" cy="150" r="10" fill="#059669"></circle>
+            <path d="M55,150 C100,150 100,75 130,75 L220,75 C255,75 255,150 275,150 L345,150 L410,150" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" class="signal-path-top"></path>
+            <path d="M55,150 C100,150 100,225 130,225 L220,225 C255,225 255,150 275,150 L345,150 L410,150" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" class="signal-path-bottom"></path>
+            <circle cx="40" cy="150" r="10" fill="#059669" class="node-siret"></circle>
             <text x="40" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#111">SIRET</text>
-            <rect x="130" y="55" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
+            <rect x="130" y="55" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-base-interne"></rect>
             <text x="175" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Base Interne</text>
             <text x="175" y="84" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">(données métier)</text>
-            <rect x="130" y="205" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
+            <rect x="130" y="205" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-apis"></rect>
             <text x="175" y="222" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">APIs Externes</text>
             <text x="175" y="234" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">(INSEE, Pappers...)</text>
-            <rect x="275" y="125" width="70" height="50" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
+            <rect x="275" y="125" width="70" height="50" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-enrichment"></rect>
             <text x="310" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Agrégation</text>
             <text x="310" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">&amp; enrichissement</text>
-            <circle cx="410" cy="150" r="18" fill="#059669"></circle>
-            <path d="M403 150l5 5 9-10" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="410" cy="150" r="18" fill="#059669" class="node-fiche"></circle>
+            <path d="M403 150l5 5 9-10" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="fiche-check"></path>
             <text x="410" y="185" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#111">Fiche Prospect</text>
             <rect x="135" y="138" width="80" height="24" rx="12" fill="#059669"></rect>
             <text x="175" y="154" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="white">&lt; 5 secondes</text>
