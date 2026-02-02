@@ -1398,6 +1398,15 @@
 
             /* Modal */
             .modal-box { padding: 1.5rem; margin: 1rem; }
+
+            /* Suppliers header : empiler verticalement */
+            .suppliers-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+            /* Toggle : pleine largeur, texte non compressé */
+            .suppliers-toggle { width: 100%; justify-content: center; }
+            .toggle-btn { padding: 0.35rem 0.5rem; font-size: 0.6875rem; gap: 0.2rem; white-space: nowrap; flex-shrink: 0; }
+            .toggle-btn .count { font-size: 0.625rem; padding: 0.1rem 0.25rem; }
+            .toggle-btn i { font-size: 0.625rem; }
         }
 
         /* ========== SALESFORCE SCREEN - LIGHTNING EXPERIENCE ========== */
@@ -2099,6 +2108,36 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* ========== SF MOBILE OVERRIDES (must come after SF base styles) ========== */
+        @media (max-width: 480px) {
+            /* Masquer les éléments desktop */
+            .sf-header { display: none; }
+            .sf-nav { display: none; }
+            .sf-content { display: none; }
+
+            /* Record page remplit l'écran */
+            .sf-record-page { flex: 1; overflow-y: auto; }
+
+            /* Record header : style mobile Salesforce */
+            .sf-record-header { padding: 16px 14px 12px; }
+            .sf-record-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .sf-record-info { width: 100%; }
+            .sf-record-type { font-size: 11px; }
+            .sf-record-title { font-size: 17px; line-height: 1.3; }
+
+            /* Highlights : masquer Siège et Etat Etablissement (2e et 3e) */
+            .sf-highlight:nth-child(2),
+            .sf-highlight:nth-child(3) { display: none; }
+            .sf-highlights { gap: 12px; padding-top: 12px; }
+            .sf-highlight-label { font-size: 10px; }
+            .sf-highlight-value { font-size: 12px; }
+
+            /* Actions : masquer tout sauf Opti'Match, pleine largeur */
+            .sf-record-actions { width: 100%; justify-content: center; padding-top: 8px; }
+            .sf-record-actions .sf-btn:not(.sf-btn-optimatch) { display: none; }
+            .sf-btn-optimatch { width: 100%; justify-content: center; height: 44px; font-size: 15px !important; border-radius: 10px; }
+        }
+
     </style>
 </head>
 <body>
@@ -2816,7 +2855,7 @@
                 { text: 'Analyse du profil', subtext: 'Évaluation du score crédit...', progress: 65, step: 3 },
                 { text: 'Profil validé', subtext: 'Score 8/10 - Éligible', progress: 75, step: 3, done: true },
                 { text: 'Matching fournisseurs', subtext: 'Recherche des offres compatibles...', progress: 85, step: 4 },
-                { text: 'Analyse terminée', subtext: '12 fournisseurs éligibles trouvés', progress: 95, step: 4, done: true },
+                { text: 'Analyse terminée', subtext: (window.innerWidth <= 480 ? '4' : '12') + ' fournisseurs éligibles trouvés', progress: 95, step: 4, done: true },
                 { text: 'Prêt !', subtext: 'Ouverture d\'OptiMatch...', progress: 100, step: 4, done: true, final: true }
             ];
 
@@ -2958,6 +2997,7 @@
             let pauseTimer = null;
             let loopTimer = null;
             let running = false;
+            function isMobile() { return window.innerWidth <= 480; }
             let cursorEl = null;
             let tooltipEl = null;
 
@@ -3109,10 +3149,21 @@
                     s.classList.remove('selected');
                 });
 
-                // Select first 4
+                // Select first N suppliers (2 on mobile, 4 on desktop)
                 const suppliers = document.querySelectorAll('#eligibleTab .supplier:not(.excluded-supplier)');
-                for (let i = 0; i < 4 && i < suppliers.length; i++) {
+                const preSelectCount = isMobile() ? 2 : 4;
+                for (let i = 0; i < preSelectCount && i < suppliers.length; i++) {
                     suppliers[i].classList.add('selected');
+                }
+
+                if (isMobile()) {
+                    suppliers.forEach((s, idx) => { s.style.display = idx < 4 ? '' : 'none'; });
+                    const badge = document.querySelector('.toggle-btn.eligible .count');
+                    if (badge) badge.textContent = '4';
+                } else {
+                    suppliers.forEach(s => { s.style.display = ''; });
+                    const badge = document.querySelector('.toggle-btn.eligible .count');
+                    if (badge) badge.textContent = '12';
                 }
                 updateCount();
 
@@ -3181,36 +3232,42 @@
                         if (paused) await waitForResume();
 
                         // Step 5: Results page shown + tooltip
-                        showTooltip('4 fournisseurs \u00e9ligibles sont pr\u00e9-s\u00e9lectionn\u00e9s selon les crit\u00e8res.');
+                        showTooltip(isMobile()
+                            ? '2 fournisseurs pré-sélectionnés. Le commercial en ajoute 2 de plus.'
+                            : '4 fournisseurs éligibles sont pré-sélectionnés selon les critères.');
                         await sleep(3000);
                         if (paused) await waitForResume();
 
-                        // Step 6: Select GEG — move first, then tooltip
-                        const geg = findSupplier('GEG');
-                        if (geg) {
+                        // Step 6: Select supplier — move first, then tooltip
+                        const step6Target = isMobile() ? findSupplier('ALTERNA') : findSupplier('GEG');
+                        if (step6Target) {
                             hideTooltip();
-                            scrollToCenter(geg);
+                            scrollToCenter(step6Target);
                             await sleep(400);
-                            await moveTo(geg);
-                            showTooltip('Le commercial ajoute GEG \u00e0 sa s\u00e9lection.');
+                            await moveTo(step6Target);
+                            showTooltip(isMobile()
+                                ? 'Le commercial ajoute ALTERNA à sa sélection.'
+                                : 'Le commercial ajoute GEG à sa sélection.');
                             await sleep(600);
                             await clickEffect();
-                            if (!geg.classList.contains('selected')) safeClick(geg);
+                            if (!step6Target.classList.contains('selected')) safeClick(step6Target);
                             await sleep(600);
                         }
                         if (paused) await waitForResume();
 
-                        // Step 7: Select EKWATEUR — move first, then tooltip
-                        const ekw = findSupplier('EKWATEUR');
-                        if (ekw) {
+                        // Step 7: Select second supplier — move first, then tooltip
+                        const step7Target = isMobile() ? findSupplier('SELIA') : findSupplier('EKWATEUR');
+                        if (step7Target) {
                             hideTooltip();
-                            scrollToCenter(ekw);
+                            scrollToCenter(step7Target);
                             await sleep(400);
-                            await moveTo(ekw);
-                            showTooltip('Il ajoute aussi EKWATEUR.');
+                            await moveTo(step7Target);
+                            showTooltip(isMobile()
+                                ? 'Il ajoute aussi SELIA.'
+                                : 'Il ajoute aussi EKWATEUR.');
                             await sleep(600);
                             await clickEffect();
-                            if (!ekw.classList.contains('selected')) safeClick(ekw);
+                            if (!step7Target.classList.contains('selected')) safeClick(step7Target);
                             await sleep(600);
                         }
                         if (paused) await waitForResume();
@@ -3222,7 +3279,9 @@
                             scrollToCenter(submitBtn);
                             await sleep(400);
                             await moveTo(submitBtn);
-                            showTooltip('Il transmet les 6 fournisseurs au P\u00f4le Pricing.');
+                            showTooltip(isMobile()
+                                ? 'Il transmet les 4 fournisseurs au Pôle Pricing.'
+                                : 'Il transmet les 6 fournisseurs au Pôle Pricing.');
                             await sleep(600);
                             await clickEffect();
                             safeClick(submitBtn);
