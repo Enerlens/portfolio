@@ -1999,7 +1999,6 @@
             function scheduleResume() {
                 clearTimeout(resumeTimer);
                 resumeTimer = setTimeout(function() {
-                    resetView();
                     startAutopilot();
                 }, RESUME_DELAY);
             }
@@ -2007,9 +2006,8 @@
             function onUserInteraction() {
                 if (active) {
                     stopAutopilot();
-                    resetView();
                 }
-                // (Re)schedule resume on every interaction
+                // (Re)schedule resume — 15s after last interaction
                 scheduleResume();
             }
 
