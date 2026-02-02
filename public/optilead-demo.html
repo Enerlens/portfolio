@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiLead - Intelligence Commerciale</title>
+
+    <!-- Portfolio Fonts: Inter + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Portfolio blue palette — vibrant */
+            --moss: #1D4ED8;
+            --moss-deep: #1E40AF;
+            --moss-light: #3B82F6;
+            --sage: #64748B;
+            --mint: #DBEAFE;
+            --cream: #FFFFFF;
+            --sand: #F9FAFB;
+            --warm-white: #FFFFFF;
+            --bark: #172554;
+            --copper: #2563EB;
+            --copper-light: #60A5FA;
+
+            /* Functional */
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            --border: #E2E8F0;
+            --border-strong: #CBD5E1;
+
+            /* Typography */
+            --font-display: 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========== ANIMATED BACKGROUND ========== */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            background-image:
+                radial-gradient(ellipse 800px 600px at 20% 30%, rgba(147, 197, 253, 0.45) 0%, transparent 60%),
+                radial-gradient(ellipse 600px 400px at 80% 70%, rgba(96, 165, 250, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse 400px 300px at 60% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 40%);
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ========== LAYOUT ========== */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: var(--warm-white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .sidebar-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-mark {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(145deg, var(--moss) 0%, var(--moss-deep) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 2px 8px rgba(29, 78, 216, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .logo-mark::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent 30%);
+            animation: shimmer 4s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { transform: rotate(360deg); }
+        }
+
+        .logo-mark i {
+            font-size: 1.25rem;
+            color: var(--mint);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--moss-deep);
+        }
+
+        .logo-text p {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 1rem;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0 0.75rem;
+            margin-bottom: 0.625rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 450;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--moss);
+            border-radius: 0 2px 2px 0;
+            transition: height 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--sand);
+            color: var(--moss-deep);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(29, 78, 216, 0.08) 0%, rgba(100, 116, 139, 0.08) 100%);
+            color: var(--moss-deep);
+            font-weight: 500;
+        }
+
+        .nav-item.active::before {
+            height: 24px;
+        }
+
+        .nav-item i {
+            font-size: 1.125rem;
+            width: 22px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border);
+            background: var(--sand);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(145deg, var(--sage) 0%, var(--moss-light) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 1.5rem 3rem;
+            max-width: 1200px;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #EFF6FF 0%, rgba(219, 234, 254, 0.5) 100%);
+            border: 1px solid #BFDBFE;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--moss-deep);
+            margin-bottom: 1.25rem;
+            animation: fadeSlideDown 0.6s ease-out;
+        }
+
+        .hero-badge i {
+            font-size: 0.875rem;
+        }
+
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 600;
+            color: var(--moss-deep);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+            animation: fadeSlideUp 0.7s ease-out 0.1s both;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--copper);
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 0 auto;
+            animation: fadeSlideUp 0.7s ease-out 0.2s both;
+        }
+
+        .hero-credit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+            padding-bottom: 0.5rem;
+            opacity: 0.7;
+            text-align: center;
+            animation: fadeSlideUp 0.7s ease-out 0.3s both;
+        }
+
+        /* ========== SEARCH CARD ========== */
+        .search-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow:
+                0 4px 24px rgba(29, 78, 216, 0.06),
+                0 1px 2px rgba(29, 78, 216, 0.04);
+            margin-bottom: 2rem;
+            animation: fadeSlideUp 0.7s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--moss) 0%, var(--sage) 50%, var(--copper) 100%);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.25rem;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background: var(--sand);
+            transition: all 0.25s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-input:focus,
+        .search-input.autopilot-focus {
+            outline: none;
+            border-color: var(--moss);
+            background: var(--warm-white);
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.125rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            transition: color 0.25s ease;
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--moss);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(145deg, var(--moss) 0%, var(--moss-deep) 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(29, 78, 216, 0.3);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .search-options {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 1.25rem;
+            background: var(--sand);
+            border-radius: 12px;
+        }
+
+        .search-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .option-toggle {
+            width: 44px;
+            height: 24px;
+            background: var(--border-strong);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.25s ease;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .option-toggle.active {
+            background: var(--moss);
+        }
+
+        .option-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.25s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .option-toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        .option-text strong {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.125rem;
+        }
+
+        .option-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ========== RECENT SEARCHES ========== */
+        .recent-section {
+            margin-bottom: 2.5rem;
+            animation: fadeSlideUp 0.7s ease-out 0.4s both;
+        }
+
+        .recent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .recent-header i {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .recent-header span {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .recent-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.625rem;
+        }
+
+        .recent-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: var(--warm-white);
+            border: 1px solid #E2E8F0;
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 450;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .recent-chip:hover {
+            border-color: var(--moss);
+            background: linear-gradient(135deg, rgba(29, 78, 216, 0.04) 0%, rgba(100, 116, 139, 0.04) 100%);
+            transform: translateY(-1px);
+        }
+
+        .recent-chip i {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ========== LOADING OVERLAY ========== */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-visual {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 2rem;
+        }
+
+        .loading-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--mint);
+            border-top-color: var(--moss);
+            border-radius: 50%;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .loading-ring:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 10px;
+            left: 10px;
+            border-color: var(--sage);
+            border-top-color: var(--moss-light);
+            animation-direction: reverse;
+            animation-duration: 0.8s;
+        }
+
+        .loading-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(145deg, var(--moss) 0%, var(--moss-deep) 100%);
+            border-radius: 50%;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .loading-text {
+            font-family: var(--font-display);
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: var(--moss-deep);
+            margin-bottom: 1.5rem;
+        }
+
+        .loading-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .loading-step i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .loading-step.active {
+            opacity: 1;
+            color: var(--text-secondary);
+        }
+
+        .loading-step.done {
+            opacity: 1;
+            color: var(--moss);
+        }
+
+        /* ========== COMPANY RESULT ========== */
+        .company-result {
+            animation: resultReveal 0.6s ease-out;
+        }
+
+        @keyframes resultReveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+                0 8px 40px rgba(29, 78, 216, 0.08),
+                0 2px 8px rgba(29, 78, 216, 0.04);
+        }
+
+        /* Company Header */
+        .company-header {
+            padding: 2.5rem;
+            background: linear-gradient(135deg, var(--moss-deep) 0%, var(--moss) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .company-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .company-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin: 0 auto 1rem;
+            border-radius: 16px;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .company-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .company-siret {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-mono);
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            padding: 1px;
+        }
+
+        .info-block {
+            background: var(--warm-white);
+            padding: 1.5rem;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .block-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--mint) 0%, #93C5FD 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--moss-deep);
+            font-size: 1rem;
+        }
+
+        .block-title {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            padding: 0.625rem 0;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 0.8125rem;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .info-row i {
+            color: var(--sage);
+            font-size: 0.8125rem;
+            width: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .info-label {
+            min-width: 100px;
+            color: var(--text-muted);
+            font-weight: 450;
+        }
+
+        .info-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Filiere Tags */
+        .filiere-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filiere-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--sand);
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            font-weight: 450;
+            color: var(--text-primary);
+        }
+
+        .filiere-tag i {
+            color: var(--moss);
+            font-size: 0.75rem;
+        }
+
+        /* Commercial Section */
+        .commercial-section {
+            padding: 2rem 2.5rem;
+            background: var(--sand);
+        }
+
+        .commercial-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--moss-deep);
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .commercial-title i {
+            color: var(--copper);
+        }
+
+        .commercial-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .commercial-item {
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .commercial-label {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.875rem;
+            background: linear-gradient(135deg, #EFF6FF 0%, rgba(219, 234, 254, 0.5) 100%);
+            border: 1px solid #BFDBFE;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--moss-deep);
+            font-family: var(--font-mono);
+        }
+
+        /* Regulation Badge */
+        .regulation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: linear-gradient(145deg, var(--copper) 0%, var(--copper-light) 100%);
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: white;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Pitch Box */
+        .pitch-box {
+            background: linear-gradient(135deg, rgba(29, 78, 216, 0.04) 0%, rgba(100, 116, 139, 0.04) 100%);
+            border-left: 3px solid var(--moss);
+            border-radius: 0 12px 12px 0;
+            padding: 1.25rem 1.5rem;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        /* Quick Win Box */
+        .quickwin-box {
+            background: linear-gradient(135deg, rgba(219, 234, 254, 0.3) 0%, rgba(191, 219, 254, 0.15) 100%);
+            border: 1px solid #BFDBFE;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--moss-deep);
+        }
+
+        /* Objections Box */
+        .objections-box {
+            background: linear-gradient(135deg, rgba(255, 251, 235, 0.6) 0%, rgba(254, 243, 199, 0.4) 100%);
+            border: 1px solid #FDE68A;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--bark);
+        }
+
+        /* Sources Section */
+        .sources-section {
+            padding: 1.25rem 2.5rem;
+            background: var(--sand);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .sources-label {
+            font-family: var(--font-mono);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--warm-white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 450;
+            color: var(--text-secondary);
+        }
+
+        .source-badge i {
+            color: var(--sage);
+            font-size: 0.75rem;
+        }
+
+        /* AI Chat Section */
+        .ai-chat {
+            margin: 2rem 2.5rem;
+            background: linear-gradient(145deg, var(--moss-deep) 0%, var(--moss) 100%);
+            border-radius: 20px;
+            padding: 1.75rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-chat::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .ai-chat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-chat-header i {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        .ai-chat-header span {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .ai-chat-message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-suggestion {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 0.5rem 0.875rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 450;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-body);
+        }
+
+        .ai-suggestion:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .ai-input-row {
+            display: flex;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.875rem;
+            font-family: var(--font-body);
+        }
+
+        .ai-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .ai-send {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: none;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--moss);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ai-send:hover {
+            transform: scale(1.05);
+        }
+
+        .ai-chat-conversation {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-user-message {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            text-align: right;
+            animation: fadeSlideUp 0.3s ease-out;
+        }
+
+        .ai-user-message::before {
+            content: 'Vous';
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .ai-response-message {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            animation: fadeSlideUp 0.3s ease-out;
+        }
+
+        .ai-response-message::before {
+            content: '✨ Assistant IA';
+            display: block;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .ai-response-message strong {
+            color: var(--mint);
+            font-weight: 600;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        /* Card Footer */
+        .card-footer {
+            padding: 1.25rem 2.5rem;
+            background: var(--warm-white);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .export-btn:hover {
+            background: var(--warm-white);
+            border-color: var(--moss);
+            color: var(--moss);
+        }
+
+        /* Utilities */
+        .d-none {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .commercial-section,
+            .ai-chat,
+            .card-footer {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grain-overlay"></div>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <div class="logo-mark">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Opti'Lead</h1>
+                        <p>Intelligence commerciale</p>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-label">Principal</div>
+                    <a href="#" class="nav-item active">
+                        <i class="bi bi-search"></i>
+                        <span>Recherche</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-clock-history"></i>
+                        <span>Historique</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-label">Outils</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span>Signaux marché</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-chat-square-text"></i>
+                        <span>Assistant IA</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-label">Ressources</div>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-journal-bookmark"></i>
+                        <span>Réglementations</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <i class="bi bi-folder2-open"></i>
+                        <span>Documentation</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">M</div>
+                    <div class="user-info">
+                        <h4>Melvyn</h4>
+                        <p>melvyn@optima-energie.fr</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <section class="hero">
+                <div class="hero-badge">
+                    <i class="bi bi-lightning-charge"></i>
+                    <span>Qualification instantanée</span>
+                </div>
+                <h1>Opti'<em>Lead</em></h1>
+                <p>Consolidez les informations clés avant chaque prise de contact.</p>
+            </section>
+
+            <!-- Search Card -->
+            <div class="search-card">
+                <form onsubmit="search(event)">
+                    <div class="search-row">
+                        <div class="search-input-wrapper">
+                            <input type="text" class="search-input" id="siretInput"
+                                   placeholder="Entrez un SIRET (14 chiffres) ou un nom...">
+                            <i class="bi bi-search search-icon"></i>
+                        </div>
+                        <button type="submit" class="search-btn">
+                            <i class="bi bi-arrow-right"></i>
+                            Analyser
+                        </button>
+                    </div>
+
+                    <div class="search-options">
+                        <div class="search-option">
+                            <div class="option-toggle active" onclick="this.classList.toggle('active')"></div>
+                            <div class="option-text">
+                                <strong>Base interne</strong>
+                                <span>Données propriétaires qualifiées</span>
+                            </div>
+                        </div>
+                        <div class="search-option">
+                            <div class="option-toggle active" onclick="this.classList.toggle('active')"></div>
+                            <div class="option-text">
+                                <strong>Enrichissement externe</strong>
+                                <span>INSEE, Pappers, sources publiques</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Recent Searches -->
+            <div class="recent-section">
+                <div class="recent-header">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Recherches récentes</span>
+                </div>
+                <div class="recent-chips">
+                    <span class="recent-chip" onclick="searchSiret('84512367800024')">
+                        <i class="bi bi-building"></i>
+                        EcoMetal Industries
+                    </span>
+                    <span class="recent-chip" onclick="searchSiret('91234567800015')">
+                        <i class="bi bi-building"></i>
+                        Recyclage Pro Services
+                    </span>
+                    <span class="recent-chip" onclick="searchSiret('78523641900089')">
+                        <i class="bi bi-building"></i>
+                        GreenLoop Industries
+                    </span>
+                </div>
+                <p class="hero-credit">Conçu par Melvyn</p>
+            </div>
+
+            <!-- Results Container -->
+            <div id="companyResult" class="company-result d-none"></div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-visual">
+            <div class="loading-ring"></div>
+            <div class="loading-ring"></div>
+            <div class="loading-center"></div>
+        </div>
+        <div class="loading-text">Analyse en cours...</div>
+        <div class="loading-steps">
+            <div class="loading-step" id="step1">
+                <i class="bi bi-circle"></i>
+                <span>Récupération données SIRENE</span>
+            </div>
+            <div class="loading-step" id="step2">
+                <i class="bi bi-circle"></i>
+                <span>Enrichissement base FEDEREC</span>
+            </div>
+            <div class="loading-step" id="step3">
+                <i class="bi bi-circle"></i>
+                <span>Génération stratégie commerciale</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const companies = {
+            '84512367800024': {
+                name: 'EcoMetal Industries',
+                siret: '84512367800024',
+                siren: '845123678',
+                logo: 'ecometal-logo.png',
+                group: 'Groupe Durand Industries',
+                sites: '12 sites France',
+                codeActivite: '3832Z',
+                labelActivite: 'Récupération de déchets triés',
+                teteGroupe: 'DURAND HOLDING',
+                contact: 'Jean-Pierre Martin',
+                poste: 'Directeur des Opérations',
+                email: 'jpm@ecometal.fr',
+                telephone: '04 72 XX XX XX',
+                adresse: '145 Boulevard de l\'Industrie',
+                codePostal: '69007',
+                ville: 'Lyon',
+                region: 'Auvergne-Rhône-Alpes',
+                ca: '187 M€',
+                effectif: '420 salariés',
+                filieres: ['Métaux ferreux', 'Métaux non-ferreux', 'Déchets industriels'],
+                finContrat: 'Déc. 2025',
+                consoElec: '8.2 GWh/an',
+                consoGaz: '3.1 GWh/an',
+                tags: ['Énergivore', 'Multi-sites', 'ISO 50001', 'Contrat fin 2025'],
+                regCode: 'CSPE - Optimisation éligibilité',
+                regDeadline: '31/12/2025',
+                pitch: 'Avec 12 sites industriels et des fours à induction qui tournent en 3×8, votre facture énergie pèse lourd. On a accompagné Métal Rhône sur un profil similaire : –22% sur leur budget annuel grâce à un contrat indexé spot + effacement rémunéré. 15 minutes pour voir si c\'est applicable chez vous ?',
+                quickWin: 'Potentiel identifié : –85 k€/an via renégociation contrat électricité + mise en place effacement J-1. ROI estimé < 6 mois.',
+                objections: '« On a déjà un courtier » → Notre approche est complémentaire, on optimise la structure tarifaire, pas juste le prix du MWh. « Pas le temps » → 15 min d\'échange suffisent pour valider le potentiel.',
+                angleReponse: 'Pour EcoMetal Industries, je recommande l\'angle **effacement rémunéré**. Avec leurs fours à induction en 3×8, ils ont une flexibilité de charge exploitable. Accrochez avec : "Vos fours peuvent vous rapporter de l\'argent quand ils s\'arrêtent." C\'est contre-intuitif et ça capte l\'attention. Évitez l\'angle prix pur : ils ont déjà un courtier, il faut vous différencier.'
+            },
+            '91234567800015': {
+                name: 'Recyclage Pro Services',
+                siret: '91234567800015',
+                siren: '912345678',
+                group: 'Indépendant',
+                sites: '3 sites Île-de-France',
+                codeActivite: '3831Z',
+                labelActivite: 'Démantèlement d\'épaves',
+                teteGroupe: null,
+                contact: 'Sophie Legrand',
+                poste: 'Directrice Générale',
+                email: 'sl@recyclagepro.fr',
+                telephone: '01 45 XX XX XX',
+                adresse: '23 Rue des Entrepreneurs',
+                codePostal: '92230',
+                ville: 'Gennevilliers',
+                region: 'Île-de-France',
+                ca: '42 M€',
+                effectif: '95 salariés',
+                filieres: ['Plastiques', 'DEEE', 'VHU'],
+                finContrat: 'Mars 2025',
+                consoElec: '1.8 GWh/an',
+                consoGaz: '0.4 GWh/an',
+                tags: ['PME', 'Croissance +18%', 'DEEE', 'Décarbonation'],
+                regCode: 'Décret BACS 2025',
+                regDeadline: '01/01/2025',
+                pitch: 'Vos 3 broyeurs industriels créent des pics de conso qui vous coûtent cher en pénalités de dépassement. On peut mettre en place un pilotage intelligent qui lisse la charge ET génère des revenus via l\'effacement. Chez un client similaire, ça a représenté 28k€ d\'économies dès la première année. On en parle ?',
+                quickWin: 'Potentiel identifié : –28 k€/an via optimisation puissance souscrite + pilotage des pics de consommation. Mise en place rapide.',
+                objections: '« On est trop petits pour que ça vaille le coup » → Au contraire, les PME ont souvent les contrats les moins optimisés. « Notre électricien s\'en occupe » → Nous intervenons sur la stratégie d\'achat, pas sur l\'installation.',
+                angleReponse: 'Pour Recyclage Pro Services, privilégiez l\'angle **croissance maîtrisée**. Avec +18% de croissance, leur contrat actuel est probablement sous-dimensionné et ils paient des pénalités. Accrochez avec : "Votre croissance vous coûte plus cher qu\'elle ne devrait en électricité." Parlez de leur ambition, pas de leurs problèmes.'
+            },
+            '78523641900089': {
+                name: 'GreenLoop Industries',
+                siret: '78523641900089',
+                siren: '785236419',
+                group: 'Groupe Véolia (participation 35%)',
+                sites: '8 sites France + Benelux',
+                codeActivite: '3821Z',
+                labelActivite: 'Traitement et élimination des déchets non dangereux',
+                teteGroupe: 'VEOLIA ENVIRONNEMENT',
+                contact: 'Marc Dubois',
+                poste: 'Directeur RSE & Énergie',
+                email: 'md@greenloop.eu',
+                telephone: '01 40 XX XX XX',
+                adresse: '89 Avenue de la Grande Armée',
+                codePostal: '75116',
+                ville: 'Paris',
+                region: 'National + Benelux',
+                ca: '312 M€',
+                effectif: '780 salariés',
+                filieres: ['Économie circulaire', 'Multi-flux', 'Valorisation énergétique'],
+                finContrat: 'Juin 2026',
+                consoElec: '24.5 GWh/an',
+                consoGaz: '8.7 GWh/an',
+                tags: ['Grand compte', 'Multi-pays', 'CSRD 2025', 'PPA solaire'],
+                regCode: 'CSRD - 1er reporting FY 2025',
+                regDeadline: '30/06/2026',
+                pitch: 'Avec 8 sites et des contrats qui arrivent à échéance à des dates différentes, vous perdez en pouvoir de négociation. On peut consolider vos achats et vous positionner sur un PPA solaire qui répond à vos objectifs CSRD. GreenTech Recycling a économisé 15% sur ce modèle. Intéressé ?',
+                quickWin: 'Potentiel identifié : –210 k€/an via consolidation achats énergie groupe + positionnement PPA corporate. Alignement parfait avec objectifs CSRD.',
+                objections: '« On travaille déjà avec Véolia sur l\'énergie » → Notre approche est indépendante et complémentaire, focus sur l\'optimisation des achats, pas la fourniture. « Process de décision long » → On peut commencer par un audit gratuit pour chiffrer le potentiel.',
+                angleReponse: 'Pour GreenLoop Industries, l\'angle gagnant est **CSRD + PPA**. Ils doivent reporter sur leur empreinte carbone dès 2025 et cherchent des solutions concrètes. Accrochez avec : "Un PPA solaire coche deux cases : réduction des coûts ET reporting CSRD simplifié." C\'est aligné avec leurs enjeux stratégiques, pas juste une optimisation de coûts.'
+            }
+        };
+
+        function search(event) {
+            if (event) event.preventDefault();
+            const input = document.getElementById('siretInput').value.trim();
+            if (!input) return;
+
+            let company = companies[input];
+            if (!company) {
+                const searchLower = input.toLowerCase();
+                for (const siret in companies) {
+                    if (companies[siret].name.toLowerCase().includes(searchLower)) {
+                        company = companies[siret];
+                        break;
+                    }
+                }
+            }
+
+            if (!company) {
+                alert('Entreprise non trouvée. Essayez un des SIRET de l\'historique.');
+                return;
+            }
+
+            showLoading(company);
+        }
+
+        function searchSiret(siret) {
+            const company = companies[siret];
+            if (company) {
+                document.getElementById('siretInput').value = company.name + ' • ' + siret;
+                showLoading(company);
+            }
+        }
+
+        function showLoading(company) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('active');
+
+            ['step1', 'step2', 'step3'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('active', 'done');
+                el.querySelector('i').className = 'bi bi-circle';
+            });
+
+            setTimeout(() => document.getElementById('step1').classList.add('active'), 200);
+
+            setTimeout(() => {
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step1').classList.add('done');
+                document.getElementById('step1').querySelector('i').className = 'bi bi-check-circle-fill';
+                document.getElementById('step2').classList.add('active');
+            }, 700);
+
+            setTimeout(() => {
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step2').classList.add('done');
+                document.getElementById('step2').querySelector('i').className = 'bi bi-check-circle-fill';
+                document.getElementById('step3').classList.add('active');
+            }, 1300);
+
+            setTimeout(() => {
+                document.getElementById('step3').classList.remove('active');
+                document.getElementById('step3').classList.add('done');
+                document.getElementById('step3').querySelector('i').className = 'bi bi-check-circle-fill';
+            }, 1800);
+
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                displayResults(company);
+            }, 2200);
+        }
+
+        function displayResults(company) {
+            const container = document.getElementById('companyResult');
+
+            const filieresHtml = company.filieres.map(f => `
+                <div class="filiere-tag">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>${f}</span>
+                </div>
+            `).join('');
+
+            const tagsHtml = company.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+            container.innerHTML = `
+                <div class="result-card">
+                    <div class="company-header">
+                        ${company.logo
+                            ? `<img src="${company.logo}" alt="${company.name}" class="company-logo">`
+                            : `<div class="company-icon"><i class="bi bi-building"></i></div>`
+                        }
+                        <h2 class="company-name">${company.name}</h2>
+                        <p class="company-siret">SIRET ${company.siret}</p>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-info-circle"></i></div>
+                                <h3 class="block-title">Informations générales</h3>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-tag"></i>
+                                <span class="info-label">Activité</span>
+                                <span class="info-value">${company.labelActivite}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-upc"></i>
+                                <span class="info-label">Code NAF</span>
+                                <span class="info-value">${company.codeActivite}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-building"></i>
+                                <span class="info-label">SIREN</span>
+                                <span class="info-value">${company.siren}</span>
+                            </div>
+                            ${company.teteGroupe ? `
+                            <div class="info-row">
+                                <i class="bi bi-diagram-3"></i>
+                                <span class="info-label">Groupe</span>
+                                <span class="info-value">${company.teteGroupe}</span>
+                            </div>
+                            ` : ''}
+                            <div class="info-row">
+                                <i class="bi bi-geo"></i>
+                                <span class="info-label">Sites</span>
+                                <span class="info-value">${company.sites}</span>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-person"></i></div>
+                                <h3 class="block-title">Contact référent</h3>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-person-badge"></i>
+                                <span class="info-label">Nom</span>
+                                <span class="info-value">${company.contact}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-briefcase"></i>
+                                <span class="info-label">Poste</span>
+                                <span class="info-value">${company.poste}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-envelope"></i>
+                                <span class="info-label">Email</span>
+                                <span class="info-value">${company.email}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-telephone"></i>
+                                <span class="info-label">Téléphone</span>
+                                <span class="info-value">${company.telephone}</span>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-geo-alt"></i></div>
+                                <h3 class="block-title">Localisation</h3>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-house"></i>
+                                <span class="info-label">Adresse</span>
+                                <span class="info-value">${company.adresse}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-mailbox"></i>
+                                <span class="info-label">Ville</span>
+                                <span class="info-value">${company.codePostal} ${company.ville}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-map"></i>
+                                <span class="info-label">Région</span>
+                                <span class="info-value">${company.region}</span>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-currency-euro"></i></div>
+                                <h3 class="block-title">Données financières</h3>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-graph-up"></i>
+                                <span class="info-label">CA</span>
+                                <span class="info-value">${company.ca}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-people"></i>
+                                <span class="info-label">Effectif</span>
+                                <span class="info-value">${company.effectif}</span>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-recycle"></i></div>
+                                <h3 class="block-title">Filières FEDEREC</h3>
+                            </div>
+                            <div class="filiere-list">
+                                ${filieresHtml}
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="block-header">
+                                <div class="block-icon"><i class="bi bi-broadcast"></i></div>
+                                <h3 class="block-title">Signaux d'achat</h3>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-calendar-event"></i>
+                                <span class="info-label">Fin contrat</span>
+                                <span class="info-value">${company.finContrat}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-lightning"></i>
+                                <span class="info-label">Conso élec</span>
+                                <span class="info-value">${company.consoElec}</span>
+                            </div>
+                            <div class="info-row">
+                                <i class="bi bi-fire"></i>
+                                <span class="info-label">Conso gaz</span>
+                                <span class="info-value">${company.consoGaz}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="commercial-section">
+                        <h3 class="commercial-title">
+                            <i class="bi bi-bullseye"></i>
+                            Stratégie Commerciale
+                        </h3>
+
+                        <div class="commercial-grid">
+                            <div class="commercial-item">
+                                <div class="commercial-label">
+                                    <i class="bi bi-tags"></i>
+                                    Tags qualification
+                                </div>
+                                <div class="tags-container">
+                                    ${tagsHtml}
+                                </div>
+                            </div>
+
+                            <div class="commercial-item">
+                                <div class="commercial-label">
+                                    <i class="bi bi-shield-exclamation"></i>
+                                    Échéance réglementaire
+                                </div>
+                                <span class="regulation-badge">
+                                    <i class="bi bi-calendar-event"></i>
+                                    ${company.regCode} — ${company.regDeadline}
+                                </span>
+                            </div>
+
+                            <div class="commercial-item">
+                                <div class="commercial-label">
+                                    <i class="bi bi-chat-quote"></i>
+                                    Pitch commercial
+                                </div>
+                                <div class="pitch-box">
+                                    « ${company.pitch} »
+                                </div>
+                            </div>
+
+                            <div class="commercial-item">
+                                <div class="commercial-label">
+                                    <i class="bi bi-lightning-charge"></i>
+                                    Quick Win identifié
+                                </div>
+                                <div class="quickwin-box">
+                                    ${company.quickWin}
+                                </div>
+                            </div>
+
+                            <div class="commercial-item">
+                                <div class="commercial-label">
+                                    <i class="bi bi-shield"></i>
+                                    Objections à anticiper
+                                </div>
+                                <div class="objections-box">
+                                    ${company.objections}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sources-section">
+                        <span class="sources-label">Sources</span>
+                        <span class="source-badge"><i class="bi bi-database"></i> Base FEDEREC</span>
+                        <span class="source-badge"><i class="bi bi-globe"></i> INSEE SIRENE</span>
+                        <span class="source-badge"><i class="bi bi-file-text"></i> Pappers</span>
+                        <span class="source-badge"><i class="bi bi-cpu"></i> IA générative</span>
+                    </div>
+
+                    <div class="ai-chat">
+                        <div class="ai-chat-header">
+                            <i class="bi bi-stars"></i>
+                            <span>Assistant IA Commercial</span>
+                        </div>
+                        <div class="ai-chat-message">
+                            Bonjour ! Je suis votre assistant pour préparer l'appel avec ${company.name}. Posez-moi vos questions.
+                        </div>
+                        <div class="ai-chat-conversation" id="chatConversation"></div>
+                        <div class="ai-suggestions" id="chatSuggestions">
+                            <button class="ai-suggestion" onclick="askAngle('${company.siret}')">Quel angle d'attaque privilégier ?</button>
+                            <button class="ai-suggestion">Résume les pain points</button>
+                            <button class="ai-suggestion">Prépare mon script d'appel</button>
+                        </div>
+                        <div class="ai-input-row">
+                            <input type="text" class="ai-input" placeholder="Posez une question sur cette entreprise...">
+                            <button class="ai-send"><i class="bi bi-send"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="footer-note">
+                            <i class="bi bi-info-circle"></i>
+                            Version pilote OptiLead · Conçu par Melvyn
+                        </span>
+                        <button class="export-btn">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            Exporter PDF
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            container.classList.remove('d-none');
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function askAngle(siret) {
+            const company = companies[siret];
+            if (!company) return;
+
+            const conversation = document.getElementById('chatConversation');
+            const suggestions = document.getElementById('chatSuggestions');
+
+            // Hide suggestions
+            suggestions.style.display = 'none';
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'ai-user-message';
+            userMsg.textContent = 'Quel angle d\'attaque privilégier ?';
+            conversation.appendChild(userMsg);
+
+            // Add typing indicator
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            conversation.appendChild(typing);
+
+            // Scroll to chat
+            conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // After delay, show response
+            setTimeout(() => {
+                typing.remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'ai-response-message';
+                // Convert **text** to <strong>text</strong>
+                const formattedResponse = company.angleReponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                aiMsg.innerHTML = formattedResponse;
+                conversation.appendChild(aiMsg);
+
+                conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1500);
+        }
+        // ========== AUTOPILOT MODE (iframe only) ==========
+        (function() {
+            if (window.self === window.top) return;
+
+            let active = true;
+            let timers = [];
+
+            function stop() {
+                active = false;
+                timers.forEach(clearTimeout);
+                timers = [];
+                var inp = document.getElementById('siretInput');
+                if (inp) inp.classList.remove('autopilot-focus');
+            }
+
+            ['mousedown', 'keydown', 'touchstart', 'pointerdown'].forEach(function(e) {
+                document.addEventListener(e, stop, { once: true, capture: true });
+            });
+
+            function wait(ms) {
+                return new Promise(function(r) { var t = setTimeout(r, ms); timers.push(t); });
+            }
+
+            async function typeInto(el, text) {
+                el.value = '';
+                el.classList.add('autopilot-focus');
+                for (var i = 0; i < text.length; i++) {
+                    if (!active) return;
+                    el.value += text[i];
+                    await wait(50 + Math.random() * 70);
+                }
+                await wait(400);
+                el.classList.remove('autopilot-focus');
+            }
+
+            async function smoothScroll(y, ms) {
+                var s = window.scrollY, d = y - s, t0 = performance.now();
+                await new Promise(function(resolve) {
+                    function step(now) {
+                        if (!active) return resolve();
+                        var p = Math.min((now - t0) / ms, 1);
+                        window.scrollTo(0, s + d * (1 - Math.pow(1 - p, 3)));
+                        p < 1 ? requestAnimationFrame(step) : resolve();
+                    }
+                    requestAnimationFrame(step);
+                });
+            }
+
+            var demos = [
+                { name: 'EcoMetal Industries', siret: '84512367800024' },
+                { name: 'GreenLoop Industries', siret: '78523641900089' },
+                { name: 'Recyclage Pro Services', siret: '91234567800015' }
+            ];
+
+            async function run(i) {
+                if (!active) return;
+                var company = demos[i % demos.length];
+                var input = document.getElementById('siretInput');
+                var result = document.getElementById('companyResult');
+
+                // Reset state
+                result.classList.add('d-none');
+                result.innerHTML = '';
+                input.value = '';
+                window.scrollTo(0, 0);
+
+                await wait(2500);
+                if (!active) return;
+
+                // Type company name
+                await typeInto(input, company.name);
+                if (!active) return;
+
+                await wait(600);
+                if (!active) return;
+
+                // Trigger search (shows loading then results)
+                searchSiret(company.siret);
+
+                // Wait for loading animation (~2200ms) + render
+                await wait(3200);
+                if (!active) return;
+
+                // Scroll through results progressively
+                var scrollStops = [500, 1100, 1800, 2500];
+                for (var j = 0; j < scrollStops.length; j++) {
+                    await smoothScroll(scrollStops[j], 1800);
+                    if (!active) return;
+                    await wait(1200);
+                    if (!active) return;
+                }
+
+                // Click the AI suggestion button
+                var btn = document.querySelector('.ai-suggestion');
+                if (btn) btn.click();
+
+                await wait(2500);
+                if (!active) return;
+
+                // Scroll to bottom to reveal AI response
+                await smoothScroll(document.body.scrollHeight, 2000);
+                if (!active) return;
+
+                // Pause on AI response
+                await wait(5000);
+                if (!active) return;
+
+                // Loop to next company
+                run(i + 1);
+            }
+
+            // Start after a short delay
+            setTimeout(function() { if (active) run(0); }, 3000);
+        })();
+    </script>
+</body>
+</html>

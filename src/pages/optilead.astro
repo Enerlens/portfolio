@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="OptiLead — Qualification automatisée | Melvyn Raymond"
+  description="Cas projet OptiLead : système de qualification automatisé des leads. Temps de qualification divisé par 4 grâce à l'enrichissement via APIs externes."
+  canonicalUrl="https://melvynraymond.com/optilead"
+  ogTitle="OptiLead — Qualification automatisée | Melvyn Raymond"
+  ogDescription="Cas projet OptiLead : système de qualification automatisé des leads. Temps de qualification divisé par 4 grâce à l'enrichissement via APIs externes."
+  ogUrl="https://melvynraymond.com/optilead"
+>
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-line">
+    <div class="max-w-5xl mx-auto flex items-center justify-between px-6 h-14">
+      <a href="/" class="flex items-center gap-2 group">
+        <span class="font-semibold text-sm tracking-tight text-primary group-hover:text-accent transition-colors">Melvyn Raymond</span>
+      </a>
+      <a href="/" class="text-xs font-medium uppercase tracking-wide text-secondary hover:text-accent transition-colors">
+        &larr; Retour au portfolio
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-5xl mx-auto px-6 pt-28 pb-20">
+    <!-- Label -->
+    <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">Cas Projet</p>
+
+    <!-- Title -->
+    <h1 class="text-4xl md:text-5xl font-semibold tracking-tighter text-primary mb-6">
+      Opti'Lead — Qualification automatisée
+    </h1>
+
+    <!-- Description -->
+    <p class="text-secondary text-lg leading-relaxed max-w-3xl mb-10">
+      Chez Optima, la qualification des leads entrants mobilisait les commerciaux sur des tâches répétitives : recherche d'informations entreprise, vérification SIRET, estimation de consommation énergétique. J'ai conçu et piloté le développement d'OptiLead, un outil interne qui automatise l'enrichissement des fiches prospects via APIs externes (Pappers, INSEE, Entreprises API). Résultat : un temps de qualification divisé par 4 et des fiches complètes en quelques secondes.
+    </p>
+
+    <!-- Metadata grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+      <div>
+        <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Rôle</p>
+        <p class="text-primary font-medium">Product Owner</p>
+      </div>
+      <div>
+        <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Stack</p>
+        <p class="text-primary font-medium">HTML / CSS / JS, APIs externes</p>
+      </div>
+      <div>
+        <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Impact</p>
+        <p class="text-primary font-medium">Temps qualification ÷4</p>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 mb-16">
+      <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Product Ops</span>
+      <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Automation</span>
+      <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Data</span>
+    </div>
+
+    <!-- Demo section -->
+    <section>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-3">Démo interactive</h2>
+      <p class="text-secondary text-base leading-relaxed mb-8 max-w-3xl">
+        Testez l'outil ci-dessous : recherchez une entreprise par nom ou SIRET, consultez les résultats enrichis et utilisez l'assistant IA intégré pour analyser le prospect.
+      </p>
+
+      <!-- Browser mockup -->
+      <div class="rounded-2xl shadow-2xl shadow-black/10 border border-line overflow-hidden">
+        <!-- Top bar -->
+        <div class="bg-surface px-4 py-2.5 flex items-center gap-3 relative z-10 border-b border-line">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+          </div>
+          <div class="flex-1 flex justify-center">
+            <div class="bg-white rounded-md px-4 py-1 text-[11px] text-secondary font-mono flex items-center gap-2 max-w-[280px] w-full justify-center border border-line">
+              <svg class="w-3 h-3 text-secondary shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0-1.1.9-2 2-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z"/></svg>
+              <span class="truncate">app.optilead.fr</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- iframe -->
+        <iframe
+          src="/optilead-demo.html"
+          class="w-full border-0"
+          style="height: 800px"
+          title="Démo OptiLead"
+          loading="lazy"
+        ></iframe>
+
+        <!-- Bottom bar -->
+        <div class="bg-surface px-4 py-2 border-t border-line flex items-center justify-between">
+          <span class="text-[11px] text-secondary font-mono">Démo interactive</span>
+          <a
+            href="/optilead-demo.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[11px] font-medium text-accent hover:underline transition-colors"
+          >
+            Ouvrir en plein écran ↗
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-line">
+    <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="/" class="text-xs font-medium text-secondary hover:text-accent transition-colors">&larr; Retour au portfolio</a>
+      <p class="text-[10px] text-secondary/60 font-mono uppercase tracking-widest">
+        &copy; 2026 Melvyn Raymond
+      </p>
+    </div>
+  </footer>
+</BaseLayout>
