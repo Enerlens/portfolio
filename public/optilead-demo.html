@@ -1372,6 +1372,62 @@
                 padding: 1rem 1.5rem;
             }
         }
+
+        /* ========== AUTOPILOT CURSOR ========== */
+        .autopilot-cursor {
+            position: fixed;
+            z-index: 99999;
+            pointer-events: none;
+            width: 24px;
+            height: 24px;
+            left: 50%;
+            top: 50%;
+            transition: left 0.8s cubic-bezier(.4,0,.2,1), top 0.8s cubic-bezier(.4,0,.2,1);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
+        }
+        .autopilot-cursor.clicking {
+            transform: scale(0.75);
+            transition: left 0.8s cubic-bezier(.4,0,.2,1), top 0.8s cubic-bezier(.4,0,.2,1), transform 0.1s ease;
+        }
+        .autopilot-click-ripple {
+            position: fixed;
+            z-index: 99998;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.35);
+            transform: translate(-50%, -50%);
+            animation: autopilotRipple 0.6s ease-out forwards;
+        }
+        @keyframes autopilotRipple {
+            0%   { width: 0; height: 0; opacity: 1; }
+            100% { width: 60px; height: 60px; opacity: 0; }
+        }
+        .autopilot-tooltip {
+            position: fixed;
+            z-index: 99999;
+            pointer-events: none;
+            max-width: 280px;
+            padding: 10px 16px 10px 14px;
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 12.5px;
+            font-weight: 500;
+            line-height: 1.55;
+            letter-spacing: 0.01em;
+            border-radius: 10px;
+            border-left: 3px solid var(--copper, #2563EB);
+            box-shadow: 0 8px 32px rgba(15,23,42,.28), 0 2px 8px rgba(15,23,42,.12);
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .autopilot-tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -2018,17 +2074,190 @@
             var active = false;
             var timers = [];
             var resumeTimer = null;
+            var cursorEl = null;
+            var tooltipEl = null;
 
             function clearTimers() {
                 timers.forEach(clearTimeout);
                 timers = [];
             }
 
+            function isMobile() { return window.innerWidth < 500; }
+
+            // ---- cursor + tooltip DOM ----
+            function ensureCursor() {
+                if (cursorEl) return cursorEl;
+                cursorEl = document.createElement('div');
+                cursorEl.className = 'autopilot-cursor';
+                cursorEl.innerHTML =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+                    '<path d="M5 3l14 8-6.5 2L9 19.5z" fill="white" stroke="#334155" stroke-width="1.2" stroke-linejoin="round"/>' +
+                    '</svg>';
+                cursorEl.style.display = 'none';
+                document.body.appendChild(cursorEl);
+
+                tooltipEl = document.createElement('div');
+                tooltipEl.className = 'autopilot-tooltip';
+                document.body.appendChild(tooltipEl);
+
+                return cursorEl;
+            }
+
+            // ---- tooltip positioning ----
+            function positionTooltip() {
+                if (!tooltipEl) return;
+                var vw = window.innerWidth;
+                var vh = window.innerHeight;
+                var cx = parseFloat(cursorEl.style.left) || 0;
+                var cy = parseFloat(cursorEl.style.top) || 0;
+                var tw = tooltipEl.offsetWidth || 260;
+                var th = tooltipEl.offsetHeight || 40;
+                var x, y;
+                // Cursor off-screen? Position tooltip as bottom-center caption
+                if (cx < 0 || cx > vw) {
+                    x = Math.round((vw - tw) / 2);
+                    y = vh - th - 24;
+                } else {
+                    x = cx + 16;
+                    y = cy + 28;
+                    // Flip above if too low
+                    if (y + th > vh - 8) y = cy - th - 10;
+                }
+                // Clamp inside viewport
+                x = Math.max(8, Math.min(x, vw - tw - 8));
+                y = Math.max(8, Math.min(y, vh - th - 8));
+                tooltipEl.style.left = x + 'px';
+                tooltipEl.style.top = y + 'px';
+            }
+
+            function showTooltip(text) {
+                if (!tooltipEl) return;
+                tooltipEl.textContent = text;
+                tooltipEl.classList.add('visible');
+                requestAnimationFrame(positionTooltip);
+            }
+
+            function hideTooltip() {
+                if (!tooltipEl) return;
+                tooltipEl.classList.remove('visible');
+            }
+
+            // ---- move cursor to element ----
+            function moveTo(el) {
+                return new Promise(function(resolve) {
+                    var rect = el.getBoundingClientRect();
+                    var x = rect.left + rect.width / 2 - 4;
+                    var y = rect.top + rect.height / 2 - 4;
+                    cursorEl.style.left = x + 'px';
+                    cursorEl.style.top = y + 'px';
+                    if (tooltipEl && tooltipEl.classList.contains('visible')) {
+                        positionTooltip();
+                    }
+                    var t = setTimeout(function() {
+                        var rect2 = el.getBoundingClientRect();
+                        cursorEl.style.left = (rect2.left + rect2.width / 2 - 4) + 'px';
+                        cursorEl.style.top = (rect2.top + rect2.height / 2 - 4) + 'px';
+                        if (tooltipEl && tooltipEl.classList.contains('visible')) {
+                            positionTooltip();
+                        }
+                        resolve();
+                    }, 900);
+                    timers.push(t);
+                });
+            }
+
+            // ---- click visual effect ----
+            function clickEffect() {
+                return new Promise(function(resolve) {
+                    cursorEl.classList.add('clicking');
+                    var ripple = document.createElement('div');
+                    ripple.className = 'autopilot-click-ripple';
+                    ripple.style.left = cursorEl.style.left;
+                    ripple.style.top = cursorEl.style.top;
+                    document.body.appendChild(ripple);
+                    var t1 = setTimeout(function() {
+                        cursorEl.classList.remove('clicking');
+                    }, 150);
+                    timers.push(t1);
+                    var t2 = setTimeout(function() {
+                        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+                        resolve();
+                    }, 600);
+                    timers.push(t2);
+                });
+            }
+
+            // ---- smooth scroll that respects iframe bounds ----
+            function scrollIntoViewSmooth(el) {
+                return new Promise(function(resolve) {
+                    var rect = el.getBoundingClientRect();
+                    var targetY = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2);
+                    var maxY = document.body.scrollHeight - window.innerHeight;
+                    targetY = Math.max(0, Math.min(targetY, maxY));
+                    var startY = window.scrollY;
+                    var dist = targetY - startY;
+                    if (Math.abs(dist) < 2) return resolve();
+                    var duration = Math.min(1200, Math.max(400, Math.abs(dist) * 0.8));
+                    var t0 = performance.now();
+                    function step(now) {
+                        if (!active) return resolve();
+                        var p = Math.min((now - t0) / duration, 1);
+                        var eased = -(Math.cos(Math.PI * p) - 1) / 2;
+                        window.scrollTo(0, startY + dist * eased);
+                        if (p < 1) {
+                            requestAnimationFrame(step);
+                        } else {
+                            resolve();
+                        }
+                    }
+                    requestAnimationFrame(step);
+                });
+            }
+
+            // ---- smooth scroll to absolute Y ----
+            async function smoothScroll(y, ms) {
+                var maxY = document.body.scrollHeight - window.innerHeight;
+                y = Math.max(0, Math.min(y, maxY));
+                var s = window.scrollY, d = y - s, t0 = performance.now();
+                if (Math.abs(d) < 1) return;
+                await new Promise(function(resolve) {
+                    function step(now) {
+                        if (!active) return resolve();
+                        var p = Math.min((now - t0) / ms, 1);
+                        var eased = -(Math.cos(Math.PI * p) - 1) / 2;
+                        window.scrollTo(0, s + d * eased);
+                        p < 1 ? requestAnimationFrame(step) : resolve();
+                    }
+                    requestAnimationFrame(step);
+                });
+            }
+
+            // ---- wait helper ----
+            function wait(ms) {
+                return new Promise(function(r) { var t = setTimeout(r, ms); timers.push(t); });
+            }
+
+            // ---- type into input ----
+            async function typeInto(el, text) {
+                el.value = '';
+                el.classList.add('autopilot-focus');
+                for (var i = 0; i < text.length; i++) {
+                    if (!active) return;
+                    el.value += text[i];
+                    await wait(50 + Math.random() * 70);
+                }
+                await wait(400);
+                el.classList.remove('autopilot-focus');
+            }
+
+            // ---- autopilot lifecycle ----
             function stopAutopilot() {
                 active = false;
                 _autopilot = false;
                 clearTimers();
                 document.getElementById('siretInput').classList.remove('autopilot-focus');
+                if (cursorEl) cursorEl.style.display = 'none';
+                hideTooltip();
             }
 
             function startAutopilot() {
@@ -2046,90 +2275,103 @@
 
             function onUserInteraction() {
                 if (active) {
-                    // Stop autopilot — keep current view as-is
                     stopAutopilot();
                 }
-                // Reset the 15s inactivity timer on every interaction
                 scheduleResume();
             }
 
-            // Listen to all meaningful user interactions including scroll
             ['mousedown', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(function(e) {
                 document.addEventListener(e, onUserInteraction, { capture: true, passive: true });
             });
 
-            function wait(ms) {
-                return new Promise(function(r) { var t = setTimeout(r, ms); timers.push(t); });
-            }
-
-            async function typeInto(el, text) {
-                el.value = '';
-                el.classList.add('autopilot-focus');
-                for (var i = 0; i < text.length; i++) {
-                    if (!active) return;
-                    el.value += text[i];
-                    await wait(50 + Math.random() * 70);
-                }
-                await wait(400);
-                el.classList.remove('autopilot-focus');
-            }
-
-            async function smoothScroll(y, ms) {
-                var s = window.scrollY, d = y - s, t0 = performance.now();
-                if (Math.abs(d) < 1) return;
-                await new Promise(function(resolve) {
-                    function step(now) {
-                        if (!active) return resolve();
-                        var p = Math.min((now - t0) / ms, 1);
-                        // Smooth ease-in-out sine
-                        var eased = -(Math.cos(Math.PI * p) - 1) / 2;
-                        window.scrollTo(0, s + d * eased);
-                        p < 1 ? requestAnimationFrame(step) : resolve();
-                    }
-                    requestAnimationFrame(step);
-                });
-            }
-
+            // ---- demo data ----
             var demo = { name: 'EcoMetal Industries', siret: '84512367800024' };
 
+            // ---- main 9-step autopilot flow ----
             async function run() {
                 if (!active) return;
+
                 var input = document.getElementById('siretInput');
                 var result = document.getElementById('companyResult');
+                var mobile = isMobile();
+                var tm = mobile ? 0.7 : 1; // timing multiplier
 
-                // Soft reset: scroll to top, clear for new demo
-                var mobile = window.innerWidth < 500;
+                // Soft reset
                 result.classList.add('d-none');
                 result.innerHTML = '';
                 input.value = '';
+                input.classList.remove('autopilot-focus');
                 await smoothScroll(0, mobile ? 800 : 1500);
                 if (!active) return;
 
-                await wait(mobile ? 1200 : 2000);
+                ensureCursor();
+                hideTooltip();
+                cursorEl.style.display = 'block';
+                // Position cursor off-screen initially
+                cursorEl.style.transition = 'none';
+                cursorEl.style.left = '-40px';
+                cursorEl.style.top = '50%';
+                void cursorEl.offsetWidth; // force reflow
+                cursorEl.style.transition = '';
+
+                // ──── Step 1: Page visible, intro tooltip ────
+                showTooltip("Voici Opti'Lead, l'outil de qualification instantanée des prospects.");
+                await wait(3500 * tm);
                 if (!active) return;
 
-                // Type company name
+                // ──── Step 2: Move to search input ────
+                hideTooltip();
+                cursorEl.style.display = 'block';
+                await scrollIntoViewSmooth(input);
+                if (!active) return;
+                await moveTo(input);
+                if (!active) return;
+                showTooltip("Le commercial saisit le nom ou le SIRET du prospect.");
+                await wait(1500 * tm);
+                if (!active) return;
+                hideTooltip();
+
+                // ──── Step 3: Type company name ────
                 await typeInto(input, demo.name);
                 if (!active) return;
+                await wait(500);
+                if (!active) return;
 
+                // ──── Step 4: Move to Analyser button + click ────
+                var searchBtn = document.querySelector('.search-btn');
+                if (!searchBtn) { run(); return; }
+                await scrollIntoViewSmooth(searchBtn);
+                if (!active) return;
+                await moveTo(searchBtn);
+                if (!active) return;
+                showTooltip("Un clic lance l'analyse multi-sources.");
+                await wait(600 * tm);
+                if (!active) return;
+                await clickEffect();
+                if (!active) return;
+                searchSiret(demo.siret);
+                hideTooltip();
+                await wait(600);
+                if (!active) return;
+
+                // ──── Step 5: Loading phase ────
+                cursorEl.style.display = 'none';
+                showTooltip("Opti'Lead croise les données SIRENE, FEDEREC et internes…");
+                await wait(2500 * tm);
+                if (!active) return;
+                hideTooltip();
+
+                // Wait for loading overlay to finish (total ~2.2s from searchSiret)
                 await wait(800);
                 if (!active) return;
 
-                // Trigger search
-                searchSiret(demo.siret);
-
-                // Wait for loading animation
-                await wait(3200);
-                if (!active) return;
-
-                // Scroll through results — adapt to content height
+                // ──── Step 6: Results — scroll by stages ────
+                cursorEl.style.display = 'none';
+                showTooltip("La fiche complète s'affiche : infos légales, contacts, signaux d'achat.");
                 var maxScroll = document.body.scrollHeight - window.innerHeight;
-                var isMobile = window.innerWidth < 500;
-                var stopRatios = isMobile
-                    ? [0.1, 0.25, 0.4, 0.55, 0.7]
-                    : [0.1, 0.25, 0.4, 0.55, 0.7];
-                var scrollDur = isMobile ? 2000 : 3500;
-                var pauseDur = isMobile ? 800 : 1400;
+                var stopRatios = [0.1, 0.25, 0.4, 0.55, 0.7];
+                var scrollDur = mobile ? 2000 : 3500;
+                var pauseDur = mobile ? 600 : 1000;
 
                 for (var j = 0; j < stopRatios.length; j++) {
                     await smoothScroll(Math.round(maxScroll * stopRatios[j]), scrollDur);
@@ -2137,20 +2379,43 @@
                     await wait(pauseDur);
                     if (!active) return;
                 }
-
-                // Click the AI suggestion button
-                var btn = document.querySelector('.ai-suggestion');
-                if (btn) btn.click();
-
-                await wait(isMobile ? 1800 : 2800);
+                hideTooltip();
+                await wait(300);
                 if (!active) return;
 
-                // Scroll to bottom to reveal AI response
-                await smoothScroll(maxScroll, isMobile ? 2500 : 4000);
+                // ──── Step 7: Move to AI button + click ────
+                var aiBtn = document.querySelector('.ai-suggestion');
+                if (!aiBtn) { await wait(2000); run(); return; }
+                cursorEl.style.display = 'block';
+                await scrollIntoViewSmooth(aiBtn);
+                if (!active) return;
+                await moveTo(aiBtn);
+                if (!active) return;
+                showTooltip("L'assistant IA génère un angle commercial personnalisé.");
+                await wait(600 * tm);
+                if (!active) return;
+                await clickEffect();
+                if (!active) return;
+                aiBtn.click();
+                hideTooltip();
+                await wait(1500 * tm);
                 if (!active) return;
 
-                // Pause on AI response
-                await wait(5000);
+                // ──── Step 8: AI response ────
+                cursorEl.style.display = 'none';
+                showTooltip("L'IA propose un argumentaire adapté au profil du prospect.");
+                // Scroll to bottom to show AI response
+                maxScroll = document.body.scrollHeight - window.innerHeight;
+                await smoothScroll(maxScroll, mobile ? 2500 : 4000);
+                if (!active) return;
+                await wait(4000 * tm);
+                if (!active) return;
+                hideTooltip();
+
+                // ──── Step 9: Reset + loop ────
+                cursorEl.style.display = 'none';
+                hideTooltip();
+                await wait(2000);
                 if (!active) return;
 
                 // Loop
