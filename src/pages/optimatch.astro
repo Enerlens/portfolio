@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="OptiMatch — Moteur d'éligibilité | Melvyn Raymond"
+  description="Cas projet OptiMatch : moteur d'éligibilité fournisseurs. +10 règles métier automatisées, 0 erreur d'aiguillage, qualification en une seconde."
+  canonicalUrl="https://melvynraymond.com/optimatch"
+  ogTitle="OptiMatch — Moteur d'éligibilité | Melvyn Raymond"
+  ogDescription="Cas projet OptiMatch : moteur d'éligibilité fournisseurs. +10 règles métier automatisées, 0 erreur d'aiguillage, qualification en une seconde."
+  ogUrl="https://melvynraymond.com/optimatch"
+>
+  <style>
+    body { cursor: auto !important; }
+    @media (max-width: 640px) {
+      .demo-iframe { height: 500px !important; }
+    }
+  </style>
+
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-line">
+    <div class="max-w-5xl mx-auto flex items-center justify-between px-6 h-14">
+      <a href="/" class="flex items-center gap-2 group">
+        <span class="font-semibold text-sm tracking-tight text-primary group-hover:text-accent transition-colors">Melvyn Raymond</span>
+      </a>
+      <a href="/" class="text-xs font-medium uppercase tracking-wide text-secondary hover:text-accent transition-colors">
+        &larr; Retour au portfolio
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-5xl mx-auto px-6 pt-28 pb-20">
+    <!-- Label -->
+    <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">Cas Projet</p>
+
+    <!-- Title -->
+    <h1 class="text-4xl md:text-5xl font-semibold tracking-tighter text-primary mb-6">
+      Opti'Match — Moteur d'éligibilité
+    </h1>
+
+    <!-- Context + Schema side by side -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-16">
+      <!-- Left: description + metadata + tags -->
+      <div>
+        <p class="text-secondary text-base md:text-lg leading-relaxed mb-8">
+          Chez Optima, les commerciaux consultaient un Excel partagé plusieurs fois par jour pour vérifier l'éligibilité des leads auprès de chaque fournisseur. Ce processus manuel générait des erreurs d'aiguillage et des pertes de temps considérables. J'ai conçu et piloté le développement d'OptiMatch, un moteur de règles qui qualifie automatiquement chaque lead en une seconde : code NAF, score crédit, consommation, zone géographique. Résultat : +10 règles métier automatisées, 0 erreur d'aiguillage, fournisseurs préservés.
+        </p>
+
+        <div class="grid grid-cols-3 gap-4 mb-6">
+          <div>
+            <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">R&ocirc;le</p>
+            <p class="text-primary font-medium text-sm">Product Owner</p>
+          </div>
+          <div>
+            <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Stack</p>
+            <p class="text-primary font-medium text-sm">HTML / CSS / JS</p>
+          </div>
+          <div>
+            <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Impact</p>
+            <p class="text-primary font-medium text-sm">0 erreur d'aiguillage</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">R&egrave;gles M&eacute;tier</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">UX</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Algo</span>
+        </div>
+      </div>
+
+      <!-- Right: schema -->
+      <div class="rounded-xl border border-line bg-white p-5">
+        <div class="flex items-center gap-2 mb-4 pb-3 border-b border-line">
+          <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+          <span class="text-[9px] uppercase tracking-wider font-semibold text-secondary">Eligibility Flow</span>
+        </div>
+        <div class="flex items-center justify-center">
+          <svg class="w-full h-auto" viewBox="0 0 500 320" preserveAspectRatio="xMidYMid meet">
+            <path d="M250,45 L250,90" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
+            <path d="M250,170 C250,200 90,200 90,230" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
+            <path d="M250,170 L250,230" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
+            <path d="M250,170 C250,200 410,200 410,230" fill="none" stroke="#E5E5E5" stroke-width="2"></path>
+
+            <path d="M250,45 L250,90" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round" class="flow-in"></path>
+            <path d="M250,170 C250,200 90,200 90,230" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" class="flow-out"></path>
+            <path d="M250,170 L250,230" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" class="flow-out"></path>
+            <path d="M250,170 C250,200 410,200 410,230" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" class="flow-out"></path>
+
+            <circle cx="250" cy="30" r="12" fill="#2563eb" class="node-lead"></circle>
+            <text x="275" y="34" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#111">Lead qualifi&eacute;</text>
+
+            <rect x="190" y="90" width="120" height="80" rx="10" fill="white" stroke="#111" stroke-width="1.5" class="engine-process"></rect>
+            <g class="engine-content">
+              <text x="250" y="115" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#111">Moteur de r&egrave;gles</text>
+              <text x="250" y="132" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#666">&#x2022; Code NAF</text>
+              <text x="250" y="144" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#666">&#x2022; Score cr&eacute;dit</text>
+              <text x="250" y="156" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#666">&#x2022; Consommation</text>
+
+              <circle cx="242" cy="130" r="2" fill="#2563eb" class="thinking-dot dot-1"></circle>
+              <circle cx="250" cy="130" r="2" fill="#2563eb" class="thinking-dot dot-2"></circle>
+              <circle cx="258" cy="130" r="2" fill="#2563eb" class="thinking-dot dot-3"></circle>
+            </g>
+
+            <rect x="220" y="80" width="60" height="20" rx="10" fill="#2563eb"></rect>
+            <text x="250" y="93" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="white">+10 r&egrave;gles</text>
+
+            <rect x="40" y="230" width="100" height="50" rx="8" fill="white" stroke="#059669" stroke-width="2" class="node-result"></rect>
+            <text x="90" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">EDF Pro</text>
+            <text x="90" y="265" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#059669" font-weight="600">&#x2713; &Eacute;ligible</text>
+
+            <rect x="200" y="230" width="100" height="50" rx="8" fill="white" stroke="#dc2626" stroke-width="2" class="node-result"></rect>
+            <text x="250" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Engie B2B</text>
+            <text x="250" y="265" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#dc2626" font-weight="600">&#x2717; Score bas</text>
+
+            <rect x="360" y="230" width="100" height="50" rx="8" fill="white" stroke="#059669" stroke-width="2" class="node-result"></rect>
+            <text x="410" y="250" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">TotalEnergies</text>
+            <text x="410" y="265" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#059669" font-weight="600">&#x2713; &Eacute;ligible</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo section -->
+    <section>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-3">D&eacute;mo interactive</h2>
+      <p class="text-secondary text-base leading-relaxed mb-8 max-w-3xl">
+        Testez l'outil ci-dessous : saisissez les informations d'un lead (SIRET, consommation, segment), lancez l'analyse et visualisez les fournisseurs &eacute;ligibles avec leurs crit&egrave;res de matching.
+      </p>
+
+      <!-- Browser mockup -->
+      <div class="rounded-2xl shadow-2xl shadow-black/10 border border-line overflow-hidden">
+        <!-- Top bar -->
+        <div class="bg-surface px-4 py-2.5 flex items-center gap-3 relative z-10 border-b border-line">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+          </div>
+          <div class="flex-1 flex justify-center">
+            <div class="bg-white rounded-md px-4 py-1 text-[11px] text-secondary font-mono flex items-center gap-2 max-w-[280px] w-full justify-center border border-line">
+              <svg class="w-3 h-3 text-secondary shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0-1.1.9-2 2-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z"/></svg>
+              <span class="truncate">app.optimatch.fr</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- iframe -->
+        <iframe
+          src="/optimatch-demo.html"
+          class="w-full border-0 demo-iframe"
+          style="height: 750px"
+          title="D&eacute;mo OptiMatch"
+          loading="lazy"
+        ></iframe>
+
+        <!-- Bottom bar -->
+        <div class="bg-surface px-4 py-2 border-t border-line flex items-center justify-between">
+          <span class="text-[11px] text-secondary font-mono">D&eacute;mo interactive</span>
+          <a
+            href="/optimatch-demo.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[11px] font-medium text-accent hover:underline transition-colors"
+          >
+            Ouvrir en plein &eacute;cran &#x2197;
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-line">
+    <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="/" class="text-xs font-medium text-secondary hover:text-accent transition-colors">&larr; Retour au portfolio</a>
+      <p class="text-[10px] text-secondary/60 font-mono uppercase tracking-widest">
+        &copy; 2026 Melvyn Raymond
+      </p>
+    </div>
+  </footer>
+</BaseLayout>
