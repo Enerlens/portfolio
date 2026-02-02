@@ -1959,7 +1959,7 @@
         (function() {
             if (window.self === window.top) return;
 
-            var RESUME_DELAY = 15000; // 15s of inactivity before resuming
+            var RESUME_DELAY = 15000;
             var active = false;
             var timers = [];
             var resumeTimer = null;
@@ -1969,25 +1969,11 @@
                 timers = [];
             }
 
-            function resetView() {
-                // Dismiss loading overlay
-                document.getElementById('loadingOverlay').classList.remove('active');
-                // Clear results
-                var result = document.getElementById('companyResult');
-                result.classList.add('d-none');
-                result.innerHTML = '';
-                // Clear input
-                var inp = document.getElementById('siretInput');
-                inp.value = '';
-                inp.classList.remove('autopilot-focus');
-                // Scroll iframe to top
-                window.scrollTo(0, 0);
-            }
-
             function stopAutopilot() {
                 active = false;
                 _autopilot = false;
                 clearTimers();
+                document.getElementById('siretInput').classList.remove('autopilot-focus');
             }
 
             function startAutopilot() {
@@ -2005,14 +1991,16 @@
 
             function onUserInteraction() {
                 if (active) {
+                    // Stop autopilot — keep current view as-is
                     stopAutopilot();
                 }
-                // (Re)schedule resume — 15s after last interaction
+                // Reset the 15s inactivity timer on every interaction
                 scheduleResume();
             }
 
-            ['mousedown', 'keydown', 'touchstart', 'pointerdown'].forEach(function(e) {
-                document.addEventListener(e, onUserInteraction, { capture: true });
+            // Listen to all meaningful user interactions including scroll
+            ['mousedown', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(function(e) {
+                document.addEventListener(e, onUserInteraction, { capture: true, passive: true });
             });
 
             function wait(ms) {
@@ -2033,11 +2021,12 @@
 
             async function smoothScroll(y, ms) {
                 var s = window.scrollY, d = y - s, t0 = performance.now();
+                if (Math.abs(d) < 1) return;
                 await new Promise(function(resolve) {
                     function step(now) {
                         if (!active) return resolve();
                         var p = Math.min((now - t0) / ms, 1);
-                        // ease-in-out sine — gentle start and end
+                        // Smooth ease-in-out sine
                         var eased = -(Math.cos(Math.PI * p) - 1) / 2;
                         window.scrollTo(0, s + d * eased);
                         p < 1 ? requestAnimationFrame(step) : resolve();
@@ -2050,39 +2039,39 @@
 
             async function run() {
                 if (!active) return;
-                var company = demo;
                 var input = document.getElementById('siretInput');
                 var result = document.getElementById('companyResult');
 
-                // Reset state
+                // Soft reset: scroll to top, clear for new demo
                 result.classList.add('d-none');
                 result.innerHTML = '';
                 input.value = '';
-                window.scrollTo(0, 0);
+                await smoothScroll(0, 1500);
+                if (!active) return;
 
-                await wait(2500);
+                await wait(2000);
                 if (!active) return;
 
                 // Type company name
-                await typeInto(input, company.name);
+                await typeInto(input, demo.name);
                 if (!active) return;
 
-                await wait(600);
+                await wait(800);
                 if (!active) return;
 
-                // Trigger search (shows loading then results)
-                searchSiret(company.siret);
+                // Trigger search
+                searchSiret(demo.siret);
 
-                // Wait for loading animation (~2200ms) + render
+                // Wait for loading animation
                 await wait(3200);
                 if (!active) return;
 
-                // Scroll through results progressively
-                var scrollStops = [500, 1100, 1800, 2500];
+                // Scroll through results — very gentle
+                var scrollStops = [400, 900, 1400, 2000, 2500];
                 for (var j = 0; j < scrollStops.length; j++) {
-                    await smoothScroll(scrollStops[j], 2800);
+                    await smoothScroll(scrollStops[j], 3500);
                     if (!active) return;
-                    await wait(1800);
+                    await wait(2200);
                     if (!active) return;
                 }
 
@@ -2090,11 +2079,11 @@
                 var btn = document.querySelector('.ai-suggestion');
                 if (btn) btn.click();
 
-                await wait(2500);
+                await wait(2800);
                 if (!active) return;
 
                 // Scroll to bottom to reveal AI response
-                await smoothScroll(document.body.scrollHeight, 3000);
+                await smoothScroll(document.body.scrollHeight, 4000);
                 if (!active) return;
 
                 // Pause on AI response
