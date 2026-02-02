@@ -1332,26 +1332,72 @@
         @media (max-width: 480px) {
             .suppliers-tab.active { grid-template-columns: 1fr; }
 
+            /* OptiMatch header compact */
+            .header { padding: 0 0.75rem; height: 48px; min-height: 48px; }
+            .logo-mark { width: 28px; height: 28px; border-radius: 8px; }
+            .logo-mark i { font-size: 0.8rem; }
+            .logo-title { font-size: 0.9375rem; }
+            .logo { gap: 0.5rem; }
+            .header-right { gap: 0.5rem; }
+            .sf-badge { padding: 4px 8px; font-size: 11px; gap: 4px; }
+            .sf-badge span { display: none; }
+            .user-btn span { display: none; }
+            .user-btn .avatar { width: 26px; height: 26px; font-size: 10px; }
+
             /* SF Header compact */
             .sf-search { display: none; }
             .sf-header { padding: 0 8px; height: 44px; }
             .sf-header-btn { width: 28px; height: 28px; font-size: 13px; }
             .sf-avatar { width: 26px; height: 26px; font-size: 10px; }
+            .sf-org-name { font-size: 12px; }
+
+            /* SF Nav — tighter */
+            .sf-nav-item { font-size: 11px; padding: 0 6px; }
 
             /* SF Record — tighter */
             .sf-record-icon { width: 36px; height: 36px; font-size: 16px; }
-            .sf-btn { padding: 6px 10px; font-size: 12px; }
+            .sf-btn { padding: 5px 8px; font-size: 11px; white-space: normal; }
             .sf-record-fields { gap: 6px; }
             .sf-record-field { font-size: 12px; }
+            .sf-record-title { font-size: 15px; }
+            .sf-record-header { padding: 10px 12px; }
+            .sf-record-actions { gap: 4px; }
+
+            /* SF Content */
+            .sf-content { padding: 10px 12px; }
+            .sf-section-header { font-size: 12px; padding: 6px 12px; }
+            .sf-table th, .sf-table td { padding: 6px 8px; font-size: 11px; }
 
             /* OptiMatch app header */
-            .client-strip { padding: 10px 12px; }
+            .client-strip { padding: 8px 10px; margin: 8px 10px 0; gap: 0.75rem; }
             .client-strip-identity { gap: 8px; }
             .client-strip-avatar { width: 32px; height: 32px; font-size: 11px; }
             .client-strip-name { font-size: 13px; }
 
-            /* Bottom bar */
-            .footer-bar { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+            /* Suppliers header */
+            .suppliers-header { padding: 0.5rem 0.75rem; }
+            .suppliers-title { font-size: 0.8125rem; }
+            .suppliers-counts .btn { font-size: 0.6875rem; padding: 0.25rem 0.5rem; }
+
+            /* Supplier cards */
+            .supplier { height: 64px; min-height: 64px; max-height: 64px; padding: 0.5rem 0.625rem; }
+            .supplier-name { font-size: 0.75rem; }
+            .supplier-desc { font-size: 0.625rem; }
+            .supplier-logo { width: 28px; height: 28px; }
+
+            /* Footer — stack buttons */
+            .suppliers-footer { padding: 8px 10px; flex-wrap: wrap; gap: 6px; }
+            .footer-actions { flex-wrap: wrap; gap: 6px; width: 100%; }
+            .footer-actions .btn { flex: 1; justify-content: center; padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+            .selection-count { font-size: 1rem; }
+            .selection-label { font-size: 0.6875rem; }
+
+            /* Loading screen */
+            .loading-title { font-size: 1.25rem; }
+            .loading-subtitle { font-size: 0.8125rem; }
+
+            /* Modal */
+            .modal-box { padding: 1.5rem; margin: 1rem; }
         }
 
         /* ========== SALESFORCE SCREEN - LIGHTNING EXPERIENCE ========== */
