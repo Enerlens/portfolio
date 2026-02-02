@@ -1485,6 +1485,8 @@
     </div>
 
     <script>
+        var _autopilot = false;
+
         const companies = {
             '84512367800024': {
                 name: 'EcoMetal Industries',
@@ -1911,7 +1913,7 @@
             `;
 
             container.classList.remove('d-none');
-            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (!_autopilot) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function askAngle(siret) {
@@ -1937,7 +1939,7 @@
             conversation.appendChild(typing);
 
             // Scroll to chat
-            conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (!_autopilot) conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             // After delay, show response
             setTimeout(() => {
@@ -1950,7 +1952,7 @@
                 aiMsg.innerHTML = formattedResponse;
                 conversation.appendChild(aiMsg);
 
-                conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (!_autopilot) conversation.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 1500);
         }
         // ========== AUTOPILOT MODE (iframe only) ==========
@@ -1962,6 +1964,7 @@
 
             function stop() {
                 active = false;
+                _autopilot = false;
                 timers.forEach(clearTimeout);
                 timers = [];
                 var inp = document.getElementById('siretInput');
@@ -2065,7 +2068,7 @@
             }
 
             // Start after a short delay
-            setTimeout(function() { if (active) run(0); }, 3000);
+            setTimeout(function() { if (active) { _autopilot = true; run(0); } }, 3000);
         })();
     </script>
 </body>
