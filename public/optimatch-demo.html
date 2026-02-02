@@ -3259,11 +3259,18 @@
                 return cursorEl;
             }
 
-            // ---- local scroll (prevents parent frame from scrolling) ----
+            // ---- local scroll (scroll within the suppliers container, not the window) ----
             function scrollToCenter(el) {
-                var rect = el.getBoundingClientRect();
-                var targetY = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2);
-                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+                // Find the scrollable suppliers-tab container
+                var scrollable = el.closest('.suppliers-tab');
+                if (scrollable && scrollable.scrollHeight > scrollable.clientHeight) {
+                    var containerRect = scrollable.getBoundingClientRect();
+                    var elRect = el.getBoundingClientRect();
+                    var offsetInContainer = elRect.top - containerRect.top + scrollable.scrollTop;
+                    var targetScroll = offsetInContainer - (scrollable.clientHeight / 2) + (elRect.height / 2);
+                    scrollable.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+                }
+                // Never scroll the window itself — it causes iframe content truncation
             }
 
             // ---- click without scrolling parent page ----
@@ -3415,6 +3422,10 @@
                 }
                 updateCount();
 
+                // Reset suppliers tab scroll
+                var suppTab = document.querySelector('.suppliers-tab.active');
+                if (suppTab) suppTab.scrollTop = 0;
+
                 // Show Salesforce screen, hide OptiMatch app loading state
                 const sfScreen = document.getElementById('sfScreen');
                 sfScreen.classList.remove('hidden');
@@ -3526,7 +3537,9 @@
                         const submitBtn = document.getElementById('submitBtn');
                         if (submitBtn) {
                             hideTooltip();
-                            scrollToCenter(submitBtn);
+                            // Reset suppliers tab scroll so footer is visible
+                            var st = document.querySelector('.suppliers-tab.active');
+                            if (st) st.scrollTo({ top: 0, behavior: 'smooth' });
                             await sleep(400);
                             await moveTo(submitBtn);
                             showTooltip(isMobile()
