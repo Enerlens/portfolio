@@ -959,7 +959,7 @@
             border: 1px solid var(--sand-200);
             border-radius: 24px;
             width: 100%;
-            max-width: 420px;
+            max-width: 520px;
             overflow: hidden;
             box-shadow:
                 0 25px 60px rgba(29, 78, 216, 0.15),
@@ -1032,6 +1032,101 @@
             display: flex;
             justify-content: flex-end;
             gap: 0.5rem;
+        }
+
+        /* Récapitulatif */
+        .modal-recap {
+            background: var(--sand-50);
+            border: 1px solid var(--sand-200);
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+        .recap-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.375rem 0;
+        }
+        .recap-row + .recap-row {
+            border-top: 1px solid var(--sand-200);
+        }
+        .recap-label {
+            font-size: 0.75rem;
+            color: var(--sand-500);
+            font-weight: 500;
+        }
+        .recap-value {
+            font-size: 0.8125rem;
+            color: var(--sand-900);
+            font-weight: 600;
+        }
+
+        /* Timeline prochaines étapes */
+        .modal-timeline {
+            text-align: left;
+            margin-top: 0.25rem;
+        }
+        .timeline-title {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--sand-500);
+            margin-bottom: 0.75rem;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 0.75rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: 0;
+            width: 2px;
+            background: var(--sand-200);
+        }
+        .timeline-item.done:not(:last-child)::after {
+            background: var(--success);
+        }
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6875rem;
+            flex-shrink: 0;
+        }
+        .timeline-item.done .timeline-dot {
+            background: var(--success);
+            color: white;
+        }
+        .timeline-item.active .timeline-dot {
+            background: var(--accent);
+            color: white;
+        }
+        .timeline-item.pending .timeline-dot {
+            background: var(--sand-200);
+            color: var(--sand-500);
+        }
+        .timeline-content strong {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--sand-900);
+            margin-bottom: 0.125rem;
+        }
+        .timeline-content span {
+            font-size: 0.75rem;
+            color: var(--sand-500);
+            line-height: 1.4;
         }
 
         /* ========== CONFETTI ========== */
@@ -1398,6 +1493,11 @@
 
             /* Modal */
             .modal-box { padding: 1.5rem; margin: 1rem; }
+            .modal { max-width: calc(100% - 2rem); margin: 1rem; }
+            .modal-body { padding: 1.5rem; }
+            .modal-footer { flex-direction: column; }
+            .modal-footer .btn { width: 100%; justify-content: center; }
+            .timeline-content span { font-size: 0.6875rem; }
 
             /* Suppliers header : empiler verticalement */
             .suppliers-header { flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -2108,6 +2208,8 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .sf-mobile-details { display: none; }
+
         /* ========== SF MOBILE OVERRIDES (must come after SF base styles) ========== */
         @media (max-width: 480px) {
             /* Masquer les éléments desktop */
@@ -2136,6 +2238,48 @@
             .sf-record-actions { width: 100%; justify-content: center; padding-top: 8px; }
             .sf-record-actions .sf-btn:not(.sf-btn-optimatch) { display: none; }
             .sf-btn-optimatch { width: 100%; justify-content: center; height: 44px; font-size: 15px !important; border-radius: 10px; }
+
+            .sf-mobile-details {
+                display: block;
+                padding: 0 14px 16px;
+            }
+            .sf-mobile-card {
+                background: #fff;
+                border-radius: 8px;
+                border: 1px solid var(--sf-border, #E5E5E5);
+                overflow: hidden;
+            }
+            .sf-mobile-card-title {
+                padding: 10px 14px;
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--sf-gray-2, #444);
+                border-bottom: 1px solid var(--sf-border, #E5E5E5);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .sf-mobile-card-title i { font-size: 11px; color: var(--sf-gray-3, #706E6B); }
+            .sf-mobile-fields { padding: 6px 0; }
+            .sf-mobile-field {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 7px 14px;
+                border-bottom: 1px solid #f5f5f5;
+            }
+            .sf-mobile-field:last-child { border-bottom: none; }
+            .sf-mobile-label {
+                font-size: 11px;
+                color: var(--sf-gray-3, #706E6B);
+                font-weight: 400;
+            }
+            .sf-mobile-value {
+                font-size: 12px;
+                color: var(--sf-gray-1, #181818);
+                font-weight: 500;
+                text-align: right;
+            }
         }
 
     </style>
@@ -2230,6 +2374,39 @@
                     <div class="sf-highlight">
                         <span class="sf-highlight-label">Propriétaire du compte</span>
                         <span class="sf-highlight-value"><a href="#">Melvyn Rmd</a> <i class="bi bi-person-badge" style="font-size: 12px;"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile-only detail fields -->
+            <div class="sf-mobile-details">
+                <div class="sf-mobile-card">
+                    <div class="sf-mobile-card-title"><i class="bi bi-search"></i> Détails du compte</div>
+                    <div class="sf-mobile-fields">
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">SIREN</span>
+                            <span class="sf-mobile-value">512847391</span>
+                        </div>
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">SIRET</span>
+                            <span class="sf-mobile-value">51284739100024</span>
+                        </div>
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">Code NAF</span>
+                            <span class="sf-mobile-value">23.19Z</span>
+                        </div>
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">Consommation</span>
+                            <span class="sf-mobile-value">3 200 MWh/an</span>
+                        </div>
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">Nombre de PDL</span>
+                            <span class="sf-mobile-value">18 sites</span>
+                        </div>
+                        <div class="sf-mobile-field">
+                            <span class="sf-mobile-label">Contact principal</span>
+                            <span class="sf-mobile-value">Pierre Dupont</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2761,17 +2938,64 @@
     <div class="modal-overlay" id="modal" onclick="if(event.target === this) closeModal()">
         <div class="modal">
             <div class="modal-body">
+                <!-- Icône succès -->
                 <div class="modal-icon"><i class="bi bi-check-lg"></i></div>
-                <h3>Demande envoyée</h3>
-                <p>Le dossier <strong>Techniverre Industries</strong> avec <strong id="modalCount">4</strong> fournisseurs a été transmis au Pôle Pricing.</p>
-                <div class="modal-ref">
-                    <i class="bi bi-hash"></i> OPP-2026-01234
+                <h3>Demande transmise avec succès</h3>
+                <p>Votre sélection a été envoyée au Pôle Pricing pour chiffrage.</p>
+
+                <!-- Récapitulatif -->
+                <div class="modal-recap">
+                    <div class="recap-row">
+                        <span class="recap-label">Client</span>
+                        <span class="recap-value">Techniverre Industries</span>
+                    </div>
+                    <div class="recap-row">
+                        <span class="recap-label">Référence</span>
+                        <span class="recap-value">OPP-2026-01234</span>
+                    </div>
+                    <div class="recap-row">
+                        <span class="recap-label">Fournisseurs</span>
+                        <span class="recap-value" id="modalCount">4</span>
+                    </div>
+                    <div class="recap-row">
+                        <span class="recap-label">Date</span>
+                        <span class="recap-value" id="modalDate">02/02/2026</span>
+                    </div>
+                </div>
+
+                <!-- Timeline prochaines étapes -->
+                <div class="modal-timeline">
+                    <div class="timeline-title">Prochaines étapes</div>
+                    <div class="timeline-item done">
+                        <div class="timeline-dot"><i class="bi bi-check"></i></div>
+                        <div class="timeline-content">
+                            <strong>Réception par le Pricing</strong>
+                            <span>Le Pôle Pricing reçoit votre dossier et les fournisseurs sélectionnés.</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item active">
+                        <div class="timeline-dot"><i class="bi bi-hourglass-split"></i></div>
+                        <div class="timeline-content">
+                            <strong>Élaboration des offres</strong>
+                            <span>Chaque fournisseur retenu sera contacté pour établir une proposition tarifaire.</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item pending">
+                        <div class="timeline-dot"><i class="bi bi-clock"></i></div>
+                        <div class="timeline-content">
+                            <strong>Retour des cotations</strong>
+                            <span>Vous recevrez les offres finalisées directement dans Salesforce sous 24-48h.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                <button class="btn btn-secondary" onclick="closeModal(); startNewSearch();">
+                    <i class="bi bi-arrow-repeat"></i> Nouvelle recherche
+                </button>
                 <button class="btn btn-primary" onclick="closeModal(); backToSalesforce();">
-                    <i class="bi bi-box-arrow-up-right"></i> Voir dans SF
+                    <i class="bi bi-box-arrow-up-right"></i> Retour à Salesforce
                 </button>
             </div>
         </div>
@@ -2831,6 +3055,9 @@
             const loadingText = document.getElementById('loadingText');
             const loadingSubtext = document.getElementById('loadingSubtext');
             const progressBar = document.getElementById('loadingProgressBar');
+
+            // Reset scroll before showing OptiMatch
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
             // Hide Salesforce screen immediately
             sfScreen.classList.add('hidden');
@@ -2976,9 +3203,21 @@
 
                 const count = document.querySelectorAll('.supplier.selected').length;
                 document.getElementById('modalCount').textContent = count;
+
+                // Set dynamic date
+                const now = new Date();
+                const dd = String(now.getDate()).padStart(2, '0');
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const yyyy = now.getFullYear();
+                document.getElementById('modalDate').textContent = dd + '/' + mm + '/' + yyyy;
+
                 document.getElementById('modal').classList.add('active');
                 createConfetti();
             }, 600);
+        }
+
+        function startNewSearch() {
+            launchOptiMatch();
         }
 
         function closeModal() {
@@ -3092,7 +3331,16 @@
                     if (tooltipEl && tooltipEl.classList.contains('visible')) {
                         positionTooltip();
                     }
-                    loopTimer = setTimeout(resolve, 900);
+                    // Re-position after scroll finishes
+                    loopTimer = setTimeout(() => {
+                        const rect2 = el.getBoundingClientRect();
+                        cursorEl.style.left = (rect2.left + rect2.width / 2 - 4) + 'px';
+                        cursorEl.style.top = (rect2.top + rect2.height / 2 - 4) + 'px';
+                        if (tooltipEl && tooltipEl.classList.contains('visible')) {
+                            positionTooltip();
+                        }
+                        resolve();
+                    }, 900);
                 });
             }
 
@@ -3170,6 +3418,8 @@
                 // Show Salesforce screen, hide OptiMatch app loading state
                 const sfScreen = document.getElementById('sfScreen');
                 sfScreen.classList.remove('hidden');
+                // Reset scroll position
+                window.scrollTo({ top: 0, behavior: 'instant' });
                 const loadingOverlay = document.getElementById('loadingOverlay');
                 if (loadingOverlay) loadingOverlay.classList.remove('active');
                 const optimatchApp = document.getElementById('optimatchApp');
@@ -3243,7 +3493,7 @@
                         if (step6Target) {
                             hideTooltip();
                             scrollToCenter(step6Target);
-                            await sleep(400);
+                            await sleep(600);
                             await moveTo(step6Target);
                             showTooltip(isMobile()
                                 ? 'Le commercial ajoute ALTERNA à sa sélection.'
@@ -3260,7 +3510,7 @@
                         if (step7Target) {
                             hideTooltip();
                             scrollToCenter(step7Target);
-                            await sleep(400);
+                            await sleep(600);
                             await moveTo(step7Target);
                             showTooltip(isMobile()
                                 ? 'Il ajoute aussi SELIA.'
@@ -3290,8 +3540,8 @@
                         if (paused) await waitForResume();
 
                         // Step 9: Modal + confetti displayed
-                        showTooltip('Demande envoy\u00e9e ! Le pricing va recevoir le dossier.');
-                        await sleep(3500);
+                        showTooltip('Demande transmise ! Récapitulatif et prochaines étapes affichés.');
+                        await sleep(5000);
                         if (paused) await waitForResume();
 
                         // Step 10: Close modal, return to Salesforce
