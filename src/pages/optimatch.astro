@@ -15,6 +15,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     @media (max-width: 640px) {
       .demo-iframe { height: 500px !important; }
     }
+
+    /* Approche produit — animations */
+    .approach-step {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .approach-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .approach-connector {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+    }
+    .approach-connector.visible {
+      transform: scaleX(1);
+    }
   </style>
 
   <!-- Header -->
@@ -221,46 +240,57 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </section>
 
     <!-- Approche Produit -->
-    <section class="mt-20">
+    <section class="mt-20" id="approche">
       <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">M&eacute;thodologie</p>
-      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-8">Approche produit</h2>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-12">Approche produit</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">1</span>
-            <p class="font-medium text-primary text-sm">Discovery</p>
-          </div>
-          <p class="text-sm text-secondary leading-relaxed pl-11">
-            Interviews terrain avec les commerciaux, cartographie du processus Excel existant et identification des pain points.
-          </p>
+      <div class="relative">
+        <!-- Horizontal connector line (desktop) -->
+        <div class="hidden md:block absolute top-5 left-[calc(12.5%+20px)] right-[calc(12.5%+20px)] z-0">
+          <div class="h-px bg-line w-full"></div>
+          <div class="h-px bg-accent/40 w-full -mt-px approach-connector"></div>
         </div>
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">2</span>
-            <p class="font-medium text-primary text-sm">Sp&eacute;cification</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <!-- Step 1 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">1</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">Discovery</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Interviews terrain avec les commerciaux, cartographie du processus existant et identification des pain points.
+            </p>
           </div>
-          <p class="text-sm text-secondary leading-relaxed pl-11">
-            R&eacute;daction des user stories, matrice de r&egrave;gles m&eacute;tier, wireframes et validation avec les stakeholders.
-          </p>
-        </div>
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">3</span>
-            <p class="font-medium text-primary text-sm">D&eacute;veloppement</p>
+
+          <!-- Step 2 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.15s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">2</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">Sp&eacute;cification</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              R&eacute;daction des user stories, matrice de r&egrave;gles m&eacute;tier, wireframes et validation avec les stakeholders.
+            </p>
           </div>
-          <p class="text-sm text-secondary leading-relaxed pl-11">
-            Sprints it&eacute;ratifs, suivi des d&eacute;veloppeurs, tests d'acceptance et feedback loop avec l'&eacute;quipe commerciale.
-          </p>
-        </div>
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">4</span>
-            <p class="font-medium text-primary text-sm">D&eacute;ploiement</p>
+
+          <!-- Step 3 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.3s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">3</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">D&eacute;veloppement</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Sprints it&eacute;ratifs, suivi des d&eacute;veloppeurs, tests d'acceptance et feedback loop avec l'&eacute;quipe commerciale.
+            </p>
           </div>
-          <p class="text-sm text-secondary leading-relaxed pl-11">
-            Mise en production, formation des &eacute;quipes, suivi des m&eacute;triques d'adoption et it&eacute;rations post-launch.
-          </p>
+
+          <!-- Step 4 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.45s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">4</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">D&eacute;ploiement</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Mise en production, formation des &eacute;quipes, suivi des m&eacute;triques d'adoption et it&eacute;rations post-launch.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -275,4 +305,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
     </div>
   </footer>
+
+  <script is:inline>
+    (function() {
+      var section = document.getElementById('approche');
+      if (!section) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var steps = section.querySelectorAll('.approach-step');
+            var line = section.querySelector('.approach-connector');
+            if (line) line.classList.add('visible');
+            steps.forEach(function(step) { step.classList.add('visible'); });
+            observer.unobserve(section);
+          }
+        });
+      }, { threshold: 0.15 });
+      observer.observe(section);
+    })();
+  </script>
 </BaseLayout>
