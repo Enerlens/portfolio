@@ -1959,11 +1959,10 @@
         (function() {
             if (window.self === window.top) return;
 
-            var RESUME_DELAY = 25000; // 25s of inactivity before resuming
+            var RESUME_DELAY = 15000; // 15s of inactivity before resuming
             var active = false;
             var timers = [];
             var resumeTimer = null;
-            var companyIndex = 0;
 
             function clearTimers() {
                 timers.forEach(clearTimeout);
@@ -1994,7 +1993,7 @@
             function startAutopilot() {
                 active = true;
                 _autopilot = true;
-                run(companyIndex);
+                run();
             }
 
             function scheduleResume() {
@@ -2047,15 +2046,11 @@
                 });
             }
 
-            var demos = [
-                { name: 'EcoMetal Industries', siret: '84512367800024' },
-                { name: 'GreenLoop Industries', siret: '78523641900089' },
-                { name: 'Recyclage Pro Services', siret: '91234567800015' }
-            ];
+            var demo = { name: 'EcoMetal Industries', siret: '84512367800024' };
 
-            async function run(i) {
+            async function run() {
                 if (!active) return;
-                var company = demos[i % demos.length];
+                var company = demo;
                 var input = document.getElementById('siretInput');
                 var result = document.getElementById('companyResult');
 
@@ -2106,9 +2101,8 @@
                 await wait(5000);
                 if (!active) return;
 
-                // Loop to next company
-                companyIndex = i + 1;
-                run(companyIndex);
+                // Loop
+                run();
             }
 
             // Start after initial delay
