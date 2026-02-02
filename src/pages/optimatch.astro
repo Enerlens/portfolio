@@ -43,11 +43,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-16">
       <!-- Left: description + metadata + tags -->
       <div>
-        <p class="text-secondary text-base md:text-lg leading-relaxed mb-8">
-          Chez Optima, les commerciaux consultaient un Excel partagé plusieurs fois par jour pour vérifier l'éligibilité des leads auprès de chaque fournisseur. Ce processus manuel générait des erreurs d'aiguillage et des pertes de temps considérables. J'ai conçu et piloté le développement d'OptiMatch, un moteur de règles qui qualifie automatiquement chaque lead en une seconde : code NAF, score crédit, consommation, zone géographique. Résultat : +10 règles métier automatisées, 0 erreur d'aiguillage, fournisseurs préservés.
-        </p>
+        <!-- Problème -->
+        <div class="mb-6">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-2">Probl&egrave;me</p>
+          <p class="text-secondary text-base leading-relaxed">
+            Les commerciaux v&eacute;rifiaient manuellement l'&eacute;ligibilit&eacute; des leads via un Excel partag&eacute;. Erreurs d'aiguillage fr&eacute;quentes, perte de temps, fournisseurs mal orient&eacute;s.
+          </p>
+        </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-6">
+        <!-- Solution -->
+        <div class="mb-8">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-2">Solution</p>
+          <p class="text-secondary text-base leading-relaxed">
+            Conception et pilotage d'un moteur de r&egrave;gles qui qualifie automatiquement chaque lead en &lt;1&nbsp;seconde&nbsp;: code NAF, score cr&eacute;dit, consommation, zone g&eacute;ographique.
+          </p>
+        </div>
+
+        <!-- Metadata -->
+        <div class="grid grid-cols-3 gap-4 mb-6 p-4 bg-surface rounded-xl border border-line">
           <div>
             <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">R&ocirc;le</p>
             <p class="text-primary font-medium text-sm">Product Owner</p>
@@ -62,10 +75,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
         </div>
 
+        <!-- Tags -->
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">R&egrave;gles M&eacute;tier</span>
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">UX</span>
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Algo</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Salesforce</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Product Ops</span>
         </div>
       </div>
 
@@ -165,6 +181,76 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           >
             Ouvrir en plein &eacute;cran &#x2197;
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Résultats & Impact -->
+    <section class="mt-20">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">R&eacute;sultats</p>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-8">Impact mesurable</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 bg-surface rounded-xl border border-line">
+          <p class="text-3xl font-semibold tracking-tight text-primary">+10</p>
+          <p class="text-sm text-secondary mt-1">R&egrave;gles m&eacute;tier automatis&eacute;es</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line">
+          <p class="text-3xl font-semibold tracking-tight text-primary">0</p>
+          <p class="text-sm text-secondary mt-1">Erreur d'aiguillage</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line">
+          <p class="text-3xl font-semibold tracking-tight text-primary">&lt;1s</p>
+          <p class="text-sm text-secondary mt-1">Qualification d'un lead</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line">
+          <p class="text-3xl font-semibold tracking-tight text-primary">100%</p>
+          <p class="text-sm text-secondary mt-1">Fournisseurs pr&eacute;serv&eacute;s</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approche Produit -->
+    <section class="mt-20">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">M&eacute;thodologie</p>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-8">Approche produit</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">1</span>
+            <p class="font-medium text-primary text-sm">Discovery</p>
+          </div>
+          <p class="text-sm text-secondary leading-relaxed pl-11">
+            Interviews terrain avec les commerciaux, cartographie du processus Excel existant et identification des pain points.
+          </p>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">2</span>
+            <p class="font-medium text-primary text-sm">Sp&eacute;cification</p>
+          </div>
+          <p class="text-sm text-secondary leading-relaxed pl-11">
+            R&eacute;daction des user stories, matrice de r&egrave;gles m&eacute;tier, wireframes et validation avec les stakeholders.
+          </p>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">3</span>
+            <p class="font-medium text-primary text-sm">D&eacute;veloppement</p>
+          </div>
+          <p class="text-sm text-secondary leading-relaxed pl-11">
+            Sprints it&eacute;ratifs, suivi des d&eacute;veloppeurs, tests d'acceptance et feedback loop avec l'&eacute;quipe commerciale.
+          </p>
+        </div>
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-8 h-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-sm font-semibold shrink-0">4</span>
+            <p class="font-medium text-primary text-sm">D&eacute;ploiement</p>
+          </div>
+          <p class="text-sm text-secondary leading-relaxed pl-11">
+            Mise en production, formation des &eacute;quipes, suivi des m&eacute;triques d'adoption et it&eacute;rations post-launch.
+          </p>
         </div>
       </div>
     </section>

@@ -2883,6 +2883,13 @@
                 return cursorEl;
             }
 
+            // ---- local scroll (prevents parent frame from scrolling) ----
+            function scrollToCenter(el) {
+                var rect = el.getBoundingClientRect();
+                var targetY = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2);
+                window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+            }
+
             // ---- tooltip helpers ----
             function positionTooltip() {
                 if (!tooltipEl) return;
@@ -2962,7 +2969,7 @@
 
             async function moveAndClick(el) {
                 if (paused) await waitForResume();
-                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                scrollToCenter(el);
                 await sleep(300);
                 await moveTo(el);
                 await clickEffect();
@@ -3073,7 +3080,7 @@
                         const geg = findSupplier('GEG');
                         if (geg) {
                             hideTooltip();
-                            geg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            scrollToCenter(geg);
                             await sleep(400);
                             await moveTo(geg);
                             showTooltip('Le commercial ajoute GEG \u00e0 sa s\u00e9lection.');
@@ -3088,7 +3095,7 @@
                         const ekw = findSupplier('EKWATEUR');
                         if (ekw) {
                             hideTooltip();
-                            ekw.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            scrollToCenter(ekw);
                             await sleep(400);
                             await moveTo(ekw);
                             showTooltip('Il ajoute aussi EKWATEUR.');
@@ -3103,7 +3110,7 @@
                         const submitBtn = document.getElementById('submitBtn');
                         if (submitBtn) {
                             hideTooltip();
-                            submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            scrollToCenter(submitBtn);
                             await sleep(400);
                             await moveTo(submitBtn);
                             showTooltip('Il transmet les 6 fournisseurs au P\u00f4le Pricing.');
