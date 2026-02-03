@@ -10,6 +10,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   ogDescription="Cas projet OptiMatch : moteur d'éligibilité fournisseurs. +10 règles métier automatisées, 0 erreur d'aiguillage, qualification en une seconde."
   ogUrl="https://melvynraymond.com/optimatch"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "OptiMatch — Moteur d'éligibilité fournisseurs",
+      "description": "Cas projet OptiMatch : moteur d'éligibilité fournisseurs. +10 règles métier automatisées, 0 erreur d'aiguillage, qualification en une seconde.",
+      "author": {
+        "@type": "Person",
+        "name": "Melvyn Raymond",
+        "url": "https://melvynraymond.com/"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Melvyn Raymond"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://melvynraymond.com/optimatch.html"
+      },
+      "datePublished": "2026-01-30",
+      "dateModified": "2026-02-03",
+      "inLanguage": "fr-FR",
+      "keywords": ["product management", "énergie B2B", "moteur d'éligibilité", "règles métier", "qualification leads"]
+    }
+    </script>
+  </Fragment>
+
   <!-- Background (Aura) -->
   <div class="aura-background-component top-0 w-full h-screen -z-10 invert saturate-0 mix-blend-normal blur-sm fixed opacity-30" data-alpha-mask="36" style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 36%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 36%, transparent)">
     <div class="aura-background-component top-0 w-full -z-10 absolute h-full">
