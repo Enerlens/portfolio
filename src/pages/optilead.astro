@@ -25,6 +25,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     @media (max-width: 640px) {
       .demo-iframe { height: 500px !important; }
     }
+
+    /* Approche produit — animations */
+    .approach-step {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .approach-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .approach-connector {
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+    }
+    .approach-connector.visible {
+      transform: scaleX(1);
+    }
   </style>
 
   <!-- Header -->
@@ -54,13 +73,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-16">
       <!-- Left: description + metadata + tags -->
       <div>
-        <p class="text-secondary text-base md:text-lg leading-relaxed mb-8">
-          Chez Optima, la qualification des leads entrants mobilisait les commerciaux sur des tâches répétitives : recherche d'informations entreprise, vérification SIRET, estimation de consommation énergétique. J'ai conçu et piloté le développement d'OptiLead, un outil interne qui automatise l'enrichissement des fiches prospects via APIs externes (Pappers, INSEE, Entreprises API). Résultat : un temps de qualification divisé par 4 et des fiches complètes en quelques secondes.
-        </p>
+        <!-- Problème -->
+        <div class="mb-6">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-2">Probl&egrave;me</p>
+          <p class="text-secondary text-base leading-relaxed">
+            Les commerciaux passaient un temps consid&eacute;rable &agrave; rechercher manuellement les informations entreprise&nbsp;: v&eacute;rification SIRET, consultation de bases publiques, estimation de consommation &eacute;nerg&eacute;tique. Un processus r&eacute;p&eacute;titif, chronophage et source d'erreurs.
+          </p>
+        </div>
 
-        <div class="grid grid-cols-3 gap-4 mb-6">
+        <!-- Solution -->
+        <div class="mb-8">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-2">Solution</p>
+          <p class="text-secondary text-base leading-relaxed">
+            Conception et pilotage d'un outil interne qui agr&egrave;ge automatiquement les donn&eacute;es de multiples sources (INSEE, Pappers, FEDEREC, base interne) pour g&eacute;n&eacute;rer une fiche prospect compl&egrave;te en quelques secondes, avec strat&eacute;gie commerciale et assistant IA int&eacute;gr&eacute;.
+          </p>
+        </div>
+
+        <!-- Metadata -->
+        <div class="grid grid-cols-3 gap-4 mb-6 p-4 bg-surface rounded-xl border border-line">
           <div>
-            <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Rôle</p>
+            <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">R&ocirc;le</p>
             <p class="text-primary font-medium text-sm">Product Owner</p>
           </div>
           <div>
@@ -69,14 +101,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           <div>
             <p class="font-mono text-[10px] uppercase tracking-widest text-secondary mb-1">Impact</p>
-            <p class="text-primary font-medium text-sm">Qualification ÷4</p>
+            <p class="text-primary font-medium text-sm">Qualification &divide;4</p>
           </div>
         </div>
 
+        <!-- Tags -->
         <div class="flex flex-wrap gap-2">
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Product Ops</span>
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Automation</span>
           <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">Data</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">APIs</span>
+          <span class="px-3 py-1 bg-surface border border-line rounded-md text-[10px] font-mono uppercase text-secondary">IA</span>
         </div>
       </div>
 
@@ -97,17 +132,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <path d="M55,150 C100,150 100,225 130,225 L220,225 C255,225 255,150 275,150 L345,150 L410,150" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" class="signal-path-bottom"></path>
             <circle cx="40" cy="150" r="10" fill="#059669" class="node-siret"></circle>
             <text x="40" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#111">SIRET</text>
-            <rect x="130" y="55" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-base-interne"></rect>
+            <rect x="130" y="55" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
             <text x="175" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Base Interne</text>
-            <text x="175" y="84" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">(données métier)</text>
-            <rect x="130" y="205" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-apis"></rect>
+            <text x="175" y="84" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">(donn&eacute;es m&eacute;tier)</text>
+            <rect x="130" y="205" width="90" height="40" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
             <text x="175" y="222" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">APIs Externes</text>
             <text x="175" y="234" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">(INSEE, Pappers...)</text>
-            <rect x="275" y="125" width="70" height="50" rx="8" fill="white" stroke="#111" stroke-width="1.5" class="node-enrichment"></rect>
-            <text x="310" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Agrégation</text>
+            <rect x="275" y="125" width="70" height="50" rx="8" fill="white" stroke="#111" stroke-width="1.5"></rect>
+            <text x="310" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#111">Agr&eacute;gation</text>
             <text x="310" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="#666">&amp; enrichissement</text>
-            <circle cx="410" cy="150" r="18" fill="#059669" class="node-fiche"></circle>
-            <path d="M403 150l5 5 9-10" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="fiche-check"></path>
+            <circle cx="410" cy="150" r="18" fill="#059669"></circle>
+            <path d="M403 150l5 5 9-10" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
             <text x="410" y="185" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#111">Fiche Prospect</text>
             <rect x="135" y="138" width="80" height="24" rx="12" fill="#059669"></rect>
             <text x="175" y="154" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="white">&lt; 5 secondes</text>
@@ -116,11 +151,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
+    <!-- Separator -->
+    <div class="relative my-20">
+      <div class="absolute inset-0 flex items-center" aria-hidden="true">
+        <div class="w-full border-t border-line"></div>
+      </div>
+      <div class="relative flex justify-center">
+        <span class="bg-white px-4 font-mono text-[10px] uppercase tracking-widest text-accent">D&eacute;mo</span>
+      </div>
+    </div>
+
     <!-- Demo section -->
     <section>
-      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-3">Démo interactive</h2>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-3">D&eacute;mo interactive</h2>
       <p class="text-secondary text-base leading-relaxed mb-8 max-w-3xl">
-        Testez l'outil ci-dessous : recherchez une entreprise par nom ou SIRET, consultez les résultats enrichis et utilisez l'assistant IA intégré pour analyser le prospect.
+        Testez l'outil ci-dessous : recherchez une entreprise par nom ou SIRET, consultez les r&eacute;sultats enrichis et utilisez l'assistant IA int&eacute;gr&eacute; pour analyser le prospect.
       </p>
 
       <!-- Browser mockup -->
@@ -145,21 +190,102 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           src="/optilead-demo.html"
           class="w-full border-0 demo-iframe"
           style="height: 650px"
-          title="Démo OptiLead"
+          title="D&eacute;mo OptiLead"
           loading="lazy"
         ></iframe>
 
         <!-- Bottom bar -->
         <div class="bg-surface px-4 py-2 border-t border-line flex items-center justify-between">
-          <span class="text-[11px] text-secondary font-mono">Démo interactive</span>
+          <span class="text-[11px] text-secondary font-mono">D&eacute;mo interactive</span>
           <a
             href="/optilead-demo.html"
             target="_blank"
             rel="noopener noreferrer"
             class="text-[11px] font-medium text-accent hover:underline transition-colors"
           >
-            Ouvrir en plein écran ↗
+            Ouvrir en plein &eacute;cran &#x2197;
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Résultats & Impact -->
+    <section class="mt-20">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">R&eacute;sultats</p>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-8">Impact mesurable</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-5 bg-surface rounded-xl border border-line text-center">
+          <p class="text-3xl font-semibold tracking-tight text-primary">&divide;4</p>
+          <p class="text-sm text-secondary mt-1">Temps de qualification</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line text-center">
+          <p class="text-3xl font-semibold tracking-tight text-primary">5s</p>
+          <p class="text-sm text-secondary mt-1">Fiche compl&egrave;te g&eacute;n&eacute;r&eacute;e</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line text-center">
+          <p class="text-3xl font-semibold tracking-tight text-primary">3</p>
+          <p class="text-sm text-secondary mt-1">Sources crois&eacute;es en temps r&eacute;el</p>
+        </div>
+        <div class="p-5 bg-surface rounded-xl border border-line text-center">
+          <p class="text-3xl font-semibold tracking-tight text-primary">IA</p>
+          <p class="text-sm text-secondary mt-1">Angle commercial personnalis&eacute;</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Approche Produit -->
+    <section class="mt-20" id="approche">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-accent mb-4">M&eacute;thodologie</p>
+      <h2 class="text-2xl font-semibold tracking-tight text-primary mb-12">Approche produit</h2>
+
+      <div class="relative">
+        <!-- Horizontal connector line (desktop) -->
+        <div class="hidden md:block absolute top-5 left-[calc(12.5%+20px)] right-[calc(12.5%+20px)] z-0">
+          <div class="h-px bg-line w-full"></div>
+          <div class="h-px bg-accent/40 w-full -mt-px approach-connector"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <!-- Step 1 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">1</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">Discovery</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Observation terrain des commerciaux, analyse du workflow de qualification et identification des sources de donn&eacute;es exploitables.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.15s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">2</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">Sp&eacute;cification</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              D&eacute;finition des champs critiques, mapping des APIs externes (INSEE, Pappers), conception des maquettes et de l'assistant IA.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.3s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">3</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">D&eacute;veloppement</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Int&eacute;gration des APIs, construction du moteur d'enrichissement, d&eacute;veloppement de l'interface et de l'assistant IA commercial.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="approach-step approach-card relative bg-white rounded-xl border border-line p-6 group" style="transition-delay: 0.45s;">
+            <div class="absolute top-0 left-0 w-full h-1 rounded-t-xl bg-gradient-to-r from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="w-10 h-10 rounded-full border-2 border-accent bg-white text-accent flex items-center justify-center text-sm font-bold shrink-0 mb-4 group-hover:bg-accent group-hover:text-white transition-colors duration-300 relative z-10">4</span>
+            <h3 class="font-semibold text-primary text-sm mb-2">D&eacute;ploiement</h3>
+            <p class="text-sm text-secondary leading-relaxed">
+              Mise en production, formation des &eacute;quipes commerciales, suivi des m&eacute;triques d'adoption et it&eacute;rations sur les suggestions IA.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -174,4 +300,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
     </div>
   </footer>
+
+  <script is:inline>
+    (function() {
+      var section = document.getElementById('approche');
+      if (!section) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var steps = section.querySelectorAll('.approach-step');
+            var line = section.querySelector('.approach-connector');
+            if (line) line.classList.add('visible');
+            steps.forEach(function(step) { step.classList.add('visible'); });
+            observer.unobserve(section);
+          }
+        });
+      }, { threshold: 0.15 });
+      observer.observe(section);
+    })();
+  </script>
 </BaseLayout>
